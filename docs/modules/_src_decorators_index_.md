@@ -21,7 +21,7 @@
 
 ###  belongsTo
 
-▸ **belongsTo**(`relation?`: Partial‹[BelongsToNode](../interfaces/_src_contracts_index_.belongstonode.md)›): *decorateAsRelation*
+▸ **belongsTo**(`relation?`: Partial‹[BelongsToNode](../interfaces/_poppinss_data_models.belongstonode.md)›): *decorateAsRelation*
 
 Define belongsTo relationship
 
@@ -29,7 +29,7 @@ Define belongsTo relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[BelongsToNode](../interfaces/_src_contracts_index_.belongstonode.md)› |
+`relation?` | Partial‹[BelongsToNode](../interfaces/_poppinss_data_models.belongstonode.md)› |
 
 **Returns:** *decorateAsRelation*
 
@@ -37,7 +37,7 @@ ___
 
 ###  column
 
-▸ **column**(`column?`: Partial‹[ColumnNode](_src_contracts_index_.md#columnnode)›): *decorateAsColumn*
+▸ **column**(`column?`: Partial‹[ColumnNode](_poppinss_data_models.md#columnnode)›): *decorateAsColumn*
 
 Define property on a model as a column. The decorator needs a
 proper model class inheriting the base model
@@ -46,7 +46,7 @@ proper model class inheriting the base model
 
 Name | Type |
 ------ | ------ |
-`column?` | Partial‹[ColumnNode](_src_contracts_index_.md#columnnode)› |
+`column?` | Partial‹[ColumnNode](_poppinss_data_models.md#columnnode)› |
 
 **Returns:** *decorateAsColumn*
 
@@ -54,7 +54,7 @@ ___
 
 ###  computed
 
-▸ **computed**(`column?`: Partial‹[ComputedNode](_src_contracts_index_.md#computednode)›): *decorateAsComputed*
+▸ **computed**(`column?`: Partial‹[ComputedNode](_poppinss_data_models.md#computednode)›): *decorateAsComputed*
 
 Define computed property on a model. The decorator needs a
 proper model class inheriting the base model
@@ -63,7 +63,7 @@ proper model class inheriting the base model
 
 Name | Type |
 ------ | ------ |
-`column?` | Partial‹[ComputedNode](_src_contracts_index_.md#computednode)› |
+`column?` | Partial‹[ComputedNode](_poppinss_data_models.md#computednode)› |
 
 **Returns:** *decorateAsComputed*
 
@@ -71,7 +71,7 @@ ___
 
 ###  hasMany
 
-▸ **hasMany**(`relation?`: Partial‹[HasManyNode](../interfaces/_src_contracts_index_.hasmanynode.md)›): *decorateAsRelation*
+▸ **hasMany**(`relation?`: Partial‹[HasManyNode](../interfaces/_poppinss_data_models.hasmanynode.md)›): *decorateAsRelation*
 
 Define hasMany relationship
 
@@ -79,7 +79,7 @@ Define hasMany relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[HasManyNode](../interfaces/_src_contracts_index_.hasmanynode.md)› |
+`relation?` | Partial‹[HasManyNode](../interfaces/_poppinss_data_models.hasmanynode.md)› |
 
 **Returns:** *decorateAsRelation*
 
@@ -87,7 +87,7 @@ ___
 
 ###  hasManyThrough
 
-▸ **hasManyThrough**(`relation?`: Partial‹[HasManyThrough](../interfaces/_src_contracts_index_.hasmanythrough.md)›): *decorateAsRelation*
+▸ **hasManyThrough**(`relation?`: Partial‹[HasManyThrough](../interfaces/_poppinss_data_models.hasmanythrough.md)›): *decorateAsRelation*
 
 Define hasManyThrough relationship
 
@@ -95,7 +95,7 @@ Define hasManyThrough relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[HasManyThrough](../interfaces/_src_contracts_index_.hasmanythrough.md)› |
+`relation?` | Partial‹[HasManyThrough](../interfaces/_poppinss_data_models.hasmanythrough.md)› |
 
 **Returns:** *decorateAsRelation*
 
@@ -103,7 +103,7 @@ ___
 
 ###  hasOne
 
-▸ **hasOne**(`relation?`: Partial‹[HasOneNode](../interfaces/_src_contracts_index_.hasonenode.md)›): *decorateAsRelation*
+▸ **hasOne**(`relation?`: Partial‹[HasOneNode](../interfaces/_poppinss_data_models.hasonenode.md)›): *decorateAsRelation*
 
 Define hasOne relationship
 
@@ -111,7 +111,7 @@ Define hasOne relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[HasOneNode](../interfaces/_src_contracts_index_.hasonenode.md)› |
+`relation?` | Partial‹[HasOneNode](../interfaces/_poppinss_data_models.hasonenode.md)› |
 
 **Returns:** *decorateAsRelation*
 
@@ -119,7 +119,7 @@ ___
 
 ###  hasOneThrough
 
-▸ **hasOneThrough**(`relation?`: Partial‹[HasOneThrough](../interfaces/_src_contracts_index_.hasonethrough.md)›): *decorateAsRelation*
+▸ **hasOneThrough**(`relation?`: Partial‹[HasOneThrough](../interfaces/_poppinss_data_models.hasonethrough.md)›): *decorateAsRelation*
 
 Define hasOneThrough relationship
 
@@ -127,7 +127,7 @@ Define hasOneThrough relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[HasOneThrough](../interfaces/_src_contracts_index_.hasonethrough.md)› |
+`relation?` | Partial‹[HasOneThrough](../interfaces/_poppinss_data_models.hasonethrough.md)› |
 
 **Returns:** *decorateAsRelation*
 
@@ -135,7 +135,7 @@ ___
 
 ###  manyToMany
 
-▸ **manyToMany**(`relation?`: Partial‹[ManyToManyNode](../interfaces/_src_contracts_index_.manytomanynode.md)›): *decorateAsRelation*
+▸ **manyToMany**(`relation?`: Partial‹[ManyToManyNode](../interfaces/_poppinss_data_models.manytomanynode.md)›): *decorateAsRelation*
 
 Define manyToMany relationship
 
@@ -143,6 +143,6 @@ Define manyToMany relationship
 
 Name | Type |
 ------ | ------ |
-`relation?` | Partial‹[ManyToManyNode](../interfaces/_src_contracts_index_.manytomanynode.md)› |
+`relation?` | Partial‹[ManyToManyNode](../interfaces/_poppinss_data_models.manytomanynode.md)› |
 
 **Returns:** *decorateAsRelation*

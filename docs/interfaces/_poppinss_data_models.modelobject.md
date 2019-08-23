@@ -1,6 +1,6 @@
 **[@poppinss/data-models](../README.md)**
 
-[Globals](../README.md) › ["src/Contracts/index"](../modules/_src_contracts_index_.md) › [ModelObject](_src_contracts_index_.modelobject.md)
+[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ModelObject](_poppinss_data_models.modelobject.md)
 
 # Interface: ModelObject
 

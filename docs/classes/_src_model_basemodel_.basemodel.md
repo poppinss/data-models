@@ -12,7 +12,7 @@ Abstract class to define fully fledged data models
 
 ## Implements
 
-* [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)
+* [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)
 
 ## Index
 
@@ -87,9 +87,9 @@ Abstract class to define fully fledged data models
 
 ###  $attributes
 
-• **$attributes**: *[ModelObject](../interfaces/_src_contracts_index_.modelobject.md)*
+• **$attributes**: *[ModelObject](../interfaces/_poppinss_data_models.modelobject.md)*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$attributes](../interfaces/_src_contracts_index_.modelcontract.md#$attributes)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$attributes](../interfaces/_poppinss_data_models.modelcontract.md#$attributes)*
 
 A copy of attributes that will be sent over to adapter
 
@@ -99,7 +99,7 @@ ___
 
 • **$isDeleted**: *boolean* = false
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$isDeleted](../interfaces/_src_contracts_index_.modelcontract.md#$isdeleted)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$isDeleted](../interfaces/_poppinss_data_models.modelcontract.md#$isdeleted)*
 
 Once deleted the model instance cannot make calls to the adapter
 
@@ -109,7 +109,7 @@ ___
 
 • **$isLocal**: *boolean* = true
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$isLocal](../interfaces/_src_contracts_index_.modelcontract.md#$islocal)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$isLocal](../interfaces/_poppinss_data_models.modelcontract.md#$islocal)*
 
 `$isLocal` tells if the model instance was created locally vs
 one generated as a result of fetch call from the adapter.
@@ -118,9 +118,9 @@ ___
 
 ###  $original
 
-• **$original**: *[ModelObject](../interfaces/_src_contracts_index_.modelobject.md)*
+• **$original**: *[ModelObject](../interfaces/_poppinss_data_models.modelobject.md)*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$original](../interfaces/_src_contracts_index_.modelcontract.md#$original)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$original](../interfaces/_poppinss_data_models.modelcontract.md#$original)*
 
 Original represents the properties that already has been
 persisted or loaded by the adapter.
@@ -131,7 +131,7 @@ ___
 
 • **$persisted**: *boolean* = false
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$persisted](../interfaces/_src_contracts_index_.modelcontract.md#$persisted)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$persisted](../interfaces/_poppinss_data_models.modelcontract.md#$persisted)*
 
 Persisted means the model has been persisted with the adapter. This will
 also be true, when model instance is created as a result of fetch
@@ -143,21 +143,21 @@ ___
 
 • **$preloaded**: *object*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$preloaded](../interfaces/_src_contracts_index_.modelcontract.md#$preloaded)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$preloaded](../interfaces/_poppinss_data_models.modelcontract.md#$preloaded)*
 
 Preloaded relationships on the model instance
 
 #### Type declaration:
 
-* \[ **relation**: *string*\]: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)[]
+* \[ **relation**: *string*\]: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)[]
 
 ___
 
 ###  $sideloaded
 
-• **$sideloaded**: *[ModelObject](../interfaces/_src_contracts_index_.modelobject.md)*
+• **$sideloaded**: *[ModelObject](../interfaces/_poppinss_data_models.modelobject.md)*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md).[$sideloaded](../interfaces/_src_contracts_index_.modelcontract.md#$sideloaded)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$sideloaded](../interfaces/_poppinss_data_models.modelcontract.md#$sideloaded)*
 
 Sideloaded are dynamic properties set on the model instance, which
 are not serialized and neither casted for adapter calls.
@@ -170,7 +170,7 @@ ___
 
 ### `Static` $adapter
 
-▪ **$adapter**: *[AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+▪ **$adapter**: *[AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 The adapter to be used for persisting and fetching data
 
@@ -187,7 +187,7 @@ ___
 
 ### `Static` $columns
 
-▪ **$columns**: *Map‹string, [ColumnNode](../modules/_src_contracts_index_.md#columnnode)›*
+▪ **$columns**: *Map‹string, [ColumnNode](../modules/_poppinss_data_models.md#columnnode)›*
 
 Columns makes it easier to define extra props on the model
 and distinguish them with the attributes to be sent
@@ -197,7 +197,7 @@ ___
 
 ### `Static` $computed
 
-▪ **$computed**: *Map‹string, [ComputedNode](../modules/_src_contracts_index_.md#computednode)›*
+▪ **$computed**: *Map‹string, [ComputedNode](../modules/_poppinss_data_models.md#computednode)›*
 
 A set of properties marked as computed. Computed properties are included in
 the `toJSON` result, else they behave the same way as any other instance
@@ -215,7 +215,7 @@ ___
 
 ### `Static` $relations
 
-▪ **$relations**: *Map‹string, [RelationNode](../modules/_src_contracts_index_.md#relationnode)›*
+▪ **$relations**: *Map‹string, [RelationNode](../modules/_poppinss_data_models.md#relationnode)›*
 
 Registered relationships for the given model
 
@@ -223,7 +223,7 @@ ___
 
 ### `Static` `Optional` $resolver
 
-▪ **$resolver**? : *[ResolverContract](../interfaces/_src_contracts_index_.resolvercontract.md)*
+▪ **$resolver**? : *[ResolverContract](../interfaces/_poppinss_data_models.resolvercontract.md)*
 
 An optional resolver to resolve entities
 
@@ -262,9 +262,9 @@ Opposite of [[this.$persisted]]
 
 ###  $consumeAdapterResult
 
-▸ **$consumeAdapterResult**(`adapterResult`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **$consumeAdapterResult**(`adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Persisting the model with adapter insert/update results. This
 method is invoked after adapter insert/update action.
@@ -273,7 +273,7 @@ method is invoked after adapter insert/update action.
 
 Name | Type |
 ------ | ------ |
-`adapterResult` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *void*
@@ -357,7 +357,7 @@ ___
 
 ▸ **$hydrateOriginals**(): *void*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Sync originals with the attributes. After this `isDirty` will
 return false
@@ -368,7 +368,7 @@ ___
 
 ### `Protected` $prepareForAdapter
 
-▸ **$prepareForAdapter**(`attributes`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)): *object*
+▸ **$prepareForAdapter**(`attributes`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)): *object*
 
 Preparing the object to be sent to the adapter. We need
 to create the object with the property names to be
@@ -378,7 +378,7 @@ used by the adapter.
 
 Name | Type |
 ------ | ------ |
-`attributes` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`attributes` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 
 **Returns:** *object*
 
@@ -403,7 +403,7 @@ ___
 
 ###  $setRelated
 
-▸ **$setRelated**(`key`: string, `adapterResult`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)[]): *void*
+▸ **$setRelated**(`key`: string, `adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[]): *void*
 
 Sets the related data on the model instance. The method internally handles
 `one to one` or `many` relations
@@ -413,7 +413,7 @@ Sets the related data on the model instance. The method internally handles
 Name | Type |
 ------ | ------ |
 `key` | string |
-`adapterResult` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) \| [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)[] |
+`adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) \| [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[] |
 
 **Returns:** *void*
 
@@ -423,7 +423,7 @@ ___
 
 ▸ **delete**(): *Promise‹void›*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Perform delete by issuing a delete request on the adapter
 
@@ -433,9 +433,9 @@ ___
 
 ###  fill
 
-▸ **fill**(`values`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **fill**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Set bulk attributes on the model instance. Setting relationships via
 fill isn't allowed, since we disallow setting relationships
@@ -445,7 +445,7 @@ locally
 
 Name | Type |
 ------ | ------ |
-`values` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`values` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *void*
@@ -454,9 +454,9 @@ ___
 
 ###  merge
 
-▸ **merge**(`values`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **merge**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Merge bulk attributes with existing attributes.
 
@@ -464,7 +464,7 @@ Merge bulk attributes with existing attributes.
 
 Name | Type |
 ------ | ------ |
-`values` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`values` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *void*
@@ -475,7 +475,7 @@ ___
 
 ▸ **save**(): *Promise‹void›*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Perform save on the model instance to commit mutations.
 
@@ -487,7 +487,7 @@ ___
 
 ▸ **toJSON**(): *object*
 
-*Implementation of [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Converting model to it's JSON representation
 
@@ -497,7 +497,7 @@ ___
 
 ### `Static` $addColumn
 
-▸ **$addColumn**(`name`: string, `options`: Partial‹[ColumnNode](../modules/_src_contracts_index_.md#columnnode)›): *void*
+▸ **$addColumn**(`name`: string, `options`: Partial‹[ColumnNode](../modules/_poppinss_data_models.md#columnnode)›): *void*
 
 Define a new column on the model. This is required, so that
 we differentiate between plain properties vs model attributes.
@@ -507,7 +507,7 @@ we differentiate between plain properties vs model attributes.
 Name | Type |
 ------ | ------ |
 `name` | string |
-`options` | Partial‹[ColumnNode](../modules/_src_contracts_index_.md#columnnode)› |
+`options` | Partial‹[ColumnNode](../modules/_poppinss_data_models.md#columnnode)› |
 
 **Returns:** *void*
 
@@ -515,7 +515,7 @@ ___
 
 ### `Static` $addComputed
 
-▸ **$addComputed**(`name`: string, `options`: Partial‹[ComputedNode](../modules/_src_contracts_index_.md#computednode)›): *void*
+▸ **$addComputed**(`name`: string, `options`: Partial‹[ComputedNode](../modules/_poppinss_data_models.md#computednode)›): *void*
 
 Adds a computed node
 
@@ -524,7 +524,7 @@ Adds a computed node
 Name | Type |
 ------ | ------ |
 `name` | string |
-`options` | Partial‹[ComputedNode](../modules/_src_contracts_index_.md#computednode)› |
+`options` | Partial‹[ComputedNode](../modules/_poppinss_data_models.md#computednode)› |
 
 **Returns:** *void*
 
@@ -532,7 +532,7 @@ ___
 
 ### `Static` $addRelation
 
-▸ **$addRelation**(`name`: string, `type`: "belongsTo" | "hasOne" | "hasMany" | "manyToMany" | "hasOneThrough" | "hasManyThrough", `options`: Omit‹Partial‹[RelationNode](../modules/_src_contracts_index_.md#relationnode)›, "type"›): *void*
+▸ **$addRelation**(`name`: string, `type`: "belongsTo" | "hasOne" | "hasMany" | "manyToMany" | "hasOneThrough" | "hasManyThrough", `options`: Omit‹Partial‹[RelationNode](../modules/_poppinss_data_models.md#relationnode)›, "type"›): *void*
 
 Adds a relationship
 
@@ -542,7 +542,7 @@ Name | Type |
 ------ | ------ |
 `name` | string |
 `type` | "belongsTo" \| "hasOne" \| "hasMany" \| "manyToMany" \| "hasOneThrough" \| "hasManyThrough" |
-`options` | Omit‹Partial‹[RelationNode](../modules/_src_contracts_index_.md#relationnode)›, "type"› |
+`options` | Omit‹Partial‹[RelationNode](../modules/_poppinss_data_models.md#relationnode)›, "type"› |
 
 **Returns:** *void*
 
@@ -560,21 +560,21 @@ ___
 
 ### `Static` $createFromAdapterResult
 
-▸ **$createFromAdapterResult**<**T**>(`this`: object, `adapterResult`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md), `sideloadAttributes?`: string[]): *T | null*
+▸ **$createFromAdapterResult**<**T**>(`this`: object, `adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *T | null*
 
 Create a model instance from the adapter result. The result value must
 be a valid object, otherwise `null` is returned.
 
 **Type parameters:**
 
-▪ **T**: *[ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+▪ **T**: *[ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `this` | object |
-`adapterResult` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *T | null*
@@ -583,7 +583,7 @@ ___
 
 ### `Static` $createMultipleFromAdapterResult
 
-▸ **$createMultipleFromAdapterResult**<**T**>(`this`: object, `adapterResults`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)[], `sideloadAttributes?`: string[]): *T[]*
+▸ **$createMultipleFromAdapterResult**<**T**>(`this`: object, `adapterResults`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[], `sideloadAttributes?`: string[]): *T[]*
 
 Creates an array of models from the adapter results. The `adapterResults`
 must be an array with valid Javascript objects.
@@ -593,14 +593,14 @@ must be an array with valid Javascript objects.
 
 **Type parameters:**
 
-▪ **T**: *[ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+▪ **T**: *[ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `this` | object |
-`adapterResults` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)[] |
+`adapterResults` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[] |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *T[]*
@@ -609,7 +609,7 @@ ___
 
 ### `Static` $getColumn
 
-▸ **$getColumn**(`name`: string): *[ColumnNode](../modules/_src_contracts_index_.md#columnnode) | undefined*
+▸ **$getColumn**(`name`: string): *[ColumnNode](../modules/_poppinss_data_models.md#columnnode) | undefined*
 
 Returns the column for a given name
 
@@ -619,13 +619,13 @@ Name | Type |
 ------ | ------ |
 `name` | string |
 
-**Returns:** *[ColumnNode](../modules/_src_contracts_index_.md#columnnode) | undefined*
+**Returns:** *[ColumnNode](../modules/_poppinss_data_models.md#columnnode) | undefined*
 
 ___
 
 ### `Static` $getComputed
 
-▸ **$getComputed**(`name`: string): *[ComputedNode](../modules/_src_contracts_index_.md#computednode) | undefined*
+▸ **$getComputed**(`name`: string): *[ComputedNode](../modules/_poppinss_data_models.md#computednode) | undefined*
 
 Get computed node
 
@@ -635,7 +635,7 @@ Name | Type |
 ------ | ------ |
 `name` | string |
 
-**Returns:** *[ComputedNode](../modules/_src_contracts_index_.md#computednode) | undefined*
+**Returns:** *[ComputedNode](../modules/_poppinss_data_models.md#computednode) | undefined*
 
 ___
 
@@ -647,7 +647,7 @@ Returns relationship node for a given relation
 
 **Type parameters:**
 
-▪ **T**: *[RelationNode](../modules/_src_contracts_index_.md#relationnode)*
+▪ **T**: *[RelationNode](../modules/_poppinss_data_models.md#relationnode)*
 
 **Parameters:**
 
@@ -709,21 +709,21 @@ ___
 
 ### `Static` create
 
-▸ **create**<**T**>(`this`: object, `values`: [ModelObject](../interfaces/_src_contracts_index_.modelobject.md)): *T*
+▸ **create**<**T**>(`this`: object, `values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)): *T*
 
 Returns a fresh instance of model by applying attributes
 to the model instance
 
 **Type parameters:**
 
-▪ **T**: *[ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+▪ **T**: *[ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `this` | object |
-`values` | [ModelObject](../interfaces/_src_contracts_index_.modelobject.md) |
+`values` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 
 **Returns:** *T*
 
@@ -737,7 +737,7 @@ Create a array of model instances from the adapter result
 
 **Type parameters:**
 
-▪ **T**: *[ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+▪ **T**: *[ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 **Parameters:**
 
@@ -757,7 +757,7 @@ Find model instance using a key/value pair
 
 **Type parameters:**
 
-▪ **T**: *[ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)*
+▪ **T**: *[ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 **Parameters:**
 

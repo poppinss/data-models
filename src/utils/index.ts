@@ -1,3 +1,7 @@
+/**
+ * @module @poppinss/data-models
+ */
+
 /*
 * @poppinss/data-models
 *

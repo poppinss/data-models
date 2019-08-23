@@ -10,7 +10,7 @@
 
 ## Implements
 
-* [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)
+* [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)
 
 ## Index
 
@@ -37,15 +37,15 @@
 
 ###  delete
 
-▸ **delete**(`instance`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)): *Promise‹any›*
+▸ **delete**(`instance`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)): *Promise‹any›*
 
-*Implementation of [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+*Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`instance` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`instance` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 
 **Returns:** *Promise‹any›*
 
@@ -53,15 +53,15 @@ ___
 
 ###  find
 
-▸ **find**(`model`: [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md), `key`: string, `value`: any): *Promise‹any›*
+▸ **find**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `key`: string, `value`: any): *Promise‹any›*
 
-*Implementation of [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+*Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md) |
+`model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
 `key` | string |
 `value` | any |
 
@@ -71,15 +71,15 @@ ___
 
 ###  findAll
 
-▸ **findAll**(`model`: [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md)): *Promise‹any›*
+▸ **findAll**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *Promise‹any›*
 
-*Implementation of [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+*Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md) |
+`model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
 
 **Returns:** *Promise‹any›*
 
@@ -87,15 +87,15 @@ ___
 
 ###  insert
 
-▸ **insert**(`instance`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md), `attributes`: any): *Promise‹any›*
+▸ **insert**(`instance`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md), `attributes`: any): *Promise‹any›*
 
-*Implementation of [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+*Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`instance` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`instance` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 `attributes` | any |
 
 **Returns:** *Promise‹any›*
@@ -112,13 +112,13 @@ ___
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)): *void*
+▸ (`model`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`model` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 
 **Returns:** *void*
 
@@ -130,13 +130,13 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)): *void*
+▸ (`model`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`model` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 
 **Returns:** *void*
 
@@ -148,13 +148,13 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md)): *void*
+▸ (`model`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`model` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 
 **Returns:** *void*
 
@@ -166,13 +166,13 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md)): *void*
+▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md) |
+`model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
 
 **Returns:** *void*
 
@@ -184,13 +184,13 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md)): *void*
+▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`model` | [ModelConstructorContract](../interfaces/_src_contracts_index_.modelconstructorcontract.md) |
+`model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
 
 **Returns:** *void*
 
@@ -198,15 +198,15 @@ ___
 
 ###  update
 
-▸ **update**(`instance`: [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md), `attributes`: any): *Promise‹any›*
+▸ **update**(`instance`: [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md), `attributes`: any): *Promise‹any›*
 
-*Implementation of [AdapterContract](../interfaces/_src_contracts_index_.adaptercontract.md)*
+*Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
-`instance` | [ModelContract](../interfaces/_src_contracts_index_.modelcontract.md) |
+`instance` | [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md) |
 `attributes` | any |
 
 **Returns:** *Promise‹any›*
