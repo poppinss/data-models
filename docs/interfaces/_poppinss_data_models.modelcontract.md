@@ -35,6 +35,7 @@ and `toJSON`.
 ### Methods
 
 * [$consumeAdapterResult](_poppinss_data_models.modelcontract.md#$consumeadapterresult)
+* [$getConstructor](_poppinss_data_models.modelcontract.md#$getconstructor)
 * [$hydrateOriginals](_poppinss_data_models.modelcontract.md#$hydrateoriginals)
 * [$setRelated](_poppinss_data_models.modelcontract.md#$setrelated)
 * [delete](_poppinss_data_models.modelcontract.md#delete)
@@ -121,6 +122,14 @@ Name | Type |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *void*
+
+___
+
+###  $getConstructor
+
+▸ **$getConstructor**(): *[ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)*
+
+**Returns:** *[ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)*
 
 ___
 

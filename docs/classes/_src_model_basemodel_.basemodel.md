@@ -48,7 +48,7 @@ Abstract class to define fully fledged data models
 * [$consumeAdapterResult](_src_model_basemodel_.basemodel.md#$consumeadapterresult)
 * [$getAttribute](_src_model_basemodel_.basemodel.md#protected-$getattribute)
 * [$getAttributeFromCache](_src_model_basemodel_.basemodel.md#protected-$getattributefromcache)
-* [$getConstructor](_src_model_basemodel_.basemodel.md#protected-$getconstructor)
+* [$getConstructor](_src_model_basemodel_.basemodel.md#$getconstructor)
 * [$getRelated](_src_model_basemodel_.basemodel.md#protected-$getrelated)
 * [$hydrateOriginals](_src_model_basemodel_.basemodel.md#$hydrateoriginals)
 * [$prepareForAdapter](_src_model_basemodel_.basemodel.md#protected-$prepareforadapter)
@@ -322,9 +322,11 @@ Name | Type |
 
 ___
 
-### `Protected` $getConstructor
+###  $getConstructor
 
 ▸ **$getConstructor**<**T**>(): *T*
+
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
 Returns the constructor for the model typed as Base model
 
