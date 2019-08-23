@@ -7,8 +7,6 @@
  * file that was distributed with this source code.
 */
 
-import * as decorators from './src/Decorators'
-
 export * from './src/Contracts'
+export * from './src/Decorators'
 export { BaseModel } from './src/Model/BaseModel'
-export { decorators }

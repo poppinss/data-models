@@ -1,5 +1,11 @@
+<div align="center">
+  <img src="https://res.cloudinary.com/adonisjs/image/upload/q_100/v1557762307/poppinss_iftxlt.jpg" width="600px">
+</div>
+
 ## Data models
 > Data models to manage data in OOP style with first class support for relationships
+
+[![circleci-image]][circleci-url] [![npm-image]][npm-url] ![][typescript-image] [![license-image]][license-url]
 
 This library is abstracted from AdonisJs [Lucid ORM](https://github.com/adonisjs/adonis-lucid) to work as a standalone implementation of [Active model](https://guides.rubyonrails.org/active_model_basics.html) heavily inspired by Rails.
 
@@ -15,6 +21,7 @@ The consumer of this library will be a developer creating an ORM for backend or 
   - [Relationship example](#relationship-example)
 - [Creating adapter](#creating-adapter)
 - [API](#api)
+- [Maintainers](#maintainers)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
@@ -181,4 +188,19 @@ The `find` and `findAll` method gets the model constructor and not the instance,
 ## API
 Please check the API docs generated via Typedoc
 
+* [API](docs/README.md)
+
+## Maintainers
+[Harminder virk](https://github.com/thetutlage)
+
+[circleci-image]: https://img.shields.io/circleci/project/github/poppinss/data-models/master.svg?style=for-the-badge&logo=circleci
+[circleci-url]: https://circleci.com/gh/poppinss/data-models "circleci"
+
+[npm-image]: https://img.shields.io/npm/v/@poppinss/data-models.svg?style=for-the-badge&logo=npm
+[npm-url]: https://npmjs.org/package/@poppinss/data-models "npm"
+
+[typescript-image]: https://img.shields.io/badge/Typescript-294E80.svg?style=for-the-badge&logo=typescript
+
+[license-url]: LICENSE.md
+[license-image]: https://img.shields.io/aur/license/pac.svg?style=for-the-badge
 
