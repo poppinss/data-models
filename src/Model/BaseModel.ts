@@ -32,6 +32,7 @@ import {
 
 /**
  * Abstract class to define fully fledged data models
+ * @module @poppinss/data-models
  */
 @StaticImplements<ModelConstructorContract>()
 export abstract class BaseModel implements ModelContract {
@@ -435,13 +436,6 @@ export abstract class BaseModel implements ModelContract {
   }
 
   /**
-   * Returns the constructor for the model typed as Base model
-   */
-  protected $getConstructor<T extends typeof BaseModel> (): T {
-    return this.constructor as T
-  }
-
-  /**
    * Preparing the object to be sent to the adapter. We need
    * to create the object with the property names to be
    * used by the adapter.
@@ -554,6 +548,13 @@ export abstract class BaseModel implements ModelContract {
    */
   public get $isDirty () {
     return Object.keys(this.$dirty).length > 0
+  }
+
+  /**
+   * Returns the constructor for the model typed as Base model
+   */
+  public $getConstructor<T extends typeof BaseModel> (): T {
+    return this.constructor as T
   }
 
   /**

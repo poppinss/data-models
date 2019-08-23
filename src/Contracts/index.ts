@@ -124,15 +124,16 @@ export interface ModelContract {
   $dirty: ModelObject
   $isDirty: boolean
   $isDeleted: boolean
-  $preloaded: { [relation: string]: ModelContract | ModelContract[] },
-  $sideloaded: ModelObject,
+  $preloaded: { [relation: string]: ModelContract | ModelContract[] }
+  $sideloaded: ModelObject
 
-  $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void,
-  $setRelated (key: string, result: ModelObject): void,
-  $hydrateOriginals (): void,
+  $getConstructor (): ModelConstructorContract
+  $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void
+  $setRelated (key: string, result: ModelObject): void
+  $hydrateOriginals (): void
 
-  fill (value: ModelObject, sideloadAttributes?: string[]): void,
-  merge (value: ModelObject, sideloadAttributes?: string[]): void,
+  fill (value: ModelObject, sideloadAttributes?: string[]): void
+  merge (value: ModelObject, sideloadAttributes?: string[]): void
   save (): Promise<void>
   delete (): Promise<void>
   toJSON (): ModelObject
