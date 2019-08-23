@@ -8,14 +8,22 @@
 */
 
 import { Exception } from '@poppinss/utils'
-import { isObject, StaticImplements } from '../utils'
+
+import { ModelObject } from '../Contracts'
 import { proxyHandler } from './proxyHandler'
+import { isObject, StaticImplements } from '../utils'
+
 import {
+  CacheNode,
   ColumnNode,
   AdapterContract,
   ModelContract,
   ModelConstructorContract,
   ComputedNode,
+  RelationNode,
+  HasManyThrough,
+  HasOneThrough,
+  ResolverContract,
 } from '../Contracts'
 
 /**
@@ -27,6 +35,11 @@ export abstract class BaseModel implements ModelContract {
    * The adapter to be used for persisting and fetching data
    */
   public static $adapter: AdapterContract
+
+  /**
+   * An optional resolver to resolve entities
+   */
+  public static $resolver?: ResolverContract
 
   /**
    * Primary key is required to build relationships across models
@@ -54,12 +67,58 @@ export abstract class BaseModel implements ModelContract {
   public static $columns: Map<string, ColumnNode>
 
   /**
+   * Registered relationships for the given model
+   */
+  public static $relations: Map<string, RelationNode>
+
+  /**
    * Mappings are required, so that we can quickly lookup serializing
    * and normalizing names for columns.
    */
   private static _mappings: {
-    serialize: Map<string, string>,
     cast: Map<string, string>,
+  }
+
+  /**
+   * Raises exception when related model is missing or not
+   * defined as a fully qualified model
+   */
+  private static _validateRelatedModel (options: Partial<RelationNode>) {
+    if (!options.relatedModel) {
+      throw new Exception(
+        'Related model reference is required for construct relationship',
+        500,
+        'E_MISSING_RELATED_MODEL',
+      )
+    }
+  }
+
+  /**
+   * Raises exception when related model is missing or not
+   * defined as a fully qualified model
+   */
+  private static _validateThroughModel (options: Partial<HasManyThrough> | Partial<HasOneThrough>) {
+    if (!options.relatedModel) {
+      throw new Exception(
+        'Through model reference is required for construct through relationships',
+        500,
+        'E_MISSING_THROUGH_MODEL',
+      )
+    }
+  }
+
+  /**
+   * Returns the cast as key for a given property
+   */
+  private static _getCastAsKey (propertyName: string, castAs?: string) {
+    return castAs || (this.$resolver ? this.$resolver.getCastAsKey(propertyName) : propertyName)
+  }
+
+  /**
+   * Returns the serialize as key for a given property
+   */
+  private static _getSerializeAsKey (propertyName: string, serializeAs?: string) {
+    return serializeAs || (this.$resolver ? this.$resolver.getSerializeAsKey(propertyName) : propertyName)
   }
 
   /**
@@ -68,14 +127,15 @@ export abstract class BaseModel implements ModelContract {
    */
   public static $createFromAdapterResult<T extends ModelContract> (
     this: new () => T,
-    adapterResult: any,
+    adapterResult: ModelObject,
+    sideloadAttributes?: string[],
   ): T | null {
     if (!isObject(adapterResult)) {
       return null
     }
 
     const instance = new this()
-    instance.$consumeAdapterResult(adapterResult)
+    instance.$consumeAdapterResult(adapterResult, sideloadAttributes)
     instance.$hydrateOriginals()
     instance.$persisted = true
     instance.$isLocal = false
@@ -91,18 +151,19 @@ export abstract class BaseModel implements ModelContract {
    */
   public static $createMultipleFromAdapterResult<T extends ModelContract> (
     this: new () => T,
-    adapterResults: any[],
+    adapterResults: ModelObject[],
+    sideloadAttributes?: string[],
   ): T[] {
     if (!Array.isArray(adapterResults)) {
       return []
     }
 
-    return adapterResults.reduce((models: T[], row) => {
+    return adapterResults.reduce((models, row) => {
       if (isObject(row)) {
-        models.push(this['$createFromAdapterResult'](row))
+        models.push(this['$createFromAdapterResult'](row, sideloadAttributes))
       }
       return models
-    }, [])
+    }, []) as T[]
   }
 
   /**
@@ -115,11 +176,12 @@ export abstract class BaseModel implements ModelContract {
 
     this.$booted = true
     this.$primaryKey = this.$primaryKey || 'id'
+
     Object.defineProperty(this, '$columns', { value: new Map() })
     Object.defineProperty(this, '$computed', { value: new Map() })
+    Object.defineProperty(this, '$relations', { value: new Map() })
     Object.defineProperty(this, '_mappings', {
       value: {
-        serialize: new Map(),
         cast: new Map(),
       },
     })
@@ -133,21 +195,23 @@ export abstract class BaseModel implements ModelContract {
     const descriptor = Object.getOwnPropertyDescriptor(this.prototype, name)
 
     const column: ColumnNode = {
-      castAs: options.castAs || name,
-      serializeAs: options.serializeAs || name,
+      castAs: this._getCastAsKey(name, options.castAs),
+      serializeAs: this._getSerializeAsKey(name, options.serializeAs),
       nullable: options.nullable || false,
       primary: options.primary || false,
       hasGetter: !!(descriptor && descriptor.get),
       hasSetter: !!(descriptor && descriptor.set),
     }
 
+    /**
+     * Set column as the primary column, when `primary` is to true
+     */
     if (column.primary) {
       this.$primaryKey = name
     }
 
     this.$columns.set(name, column)
     this._mappings.cast.set(column.castAs!, name)
-    this._mappings.serialize.set(column.serializeAs!, name)
   }
 
   /**
@@ -189,11 +253,78 @@ export abstract class BaseModel implements ModelContract {
   }
 
   /**
+   * Adds a relationship
+   */
+  public static $addRelation (
+    name: string,
+    type: RelationNode['type'],
+    options: Omit<Partial<RelationNode>, 'type'>,
+  ) {
+    if (this.$resolver) {
+      options = this.$resolver.processRelation(name, type, this, options)
+    }
+
+    this._validateRelatedModel(options)
+
+    /**
+     * Self constructing the relationship
+     */
+    let relation = {
+      relatedModel: options.relatedModel,
+      serializeAs: this._getSerializeAsKey(name, options.serializeAs),
+      type,
+    } as RelationNode
+
+    /**
+     * Add additional properties for hasOneThrough
+     */
+    if (type === 'hasOneThrough') {
+      const throughOptions = options as HasOneThrough
+      this._validateThroughModel(throughOptions)
+
+      relation = relation as HasOneThrough
+      relation.throughModel = throughOptions.throughModel
+    }
+
+    /**
+     * Add additional properties for hasManyThrough
+     */
+    if (type === 'hasManyThrough') {
+      const throughOptions = options as HasManyThrough
+      this._validateThroughModel(throughOptions)
+
+      relation = relation as HasManyThrough
+      relation.throughModel = throughOptions.throughModel
+    }
+
+    this.$relations.set(name, relation)
+  }
+
+  /**
+   * Find if some property is marked as a relation or not
+   */
+  public static $hasRelation (name: string): boolean {
+    return this.$relations.has(name)
+  }
+
+  /**
+   * Returns relationship node for a given relation
+   */
+  public static $getRelation<T extends RelationNode> (name: string): T | undefined {
+    return this.$relations.get(name) as T
+  }
+
+  /**
    * Returns a fresh instance of model by applying attributes
    * to the model instance
    */
-  public static create<T extends ModelContract> (this: new () => T): T {
-    return new this()
+  public static create<T extends ModelContract> (
+    this: new () => T,
+    values: ModelObject,
+  ): T {
+    const instance = new this()
+    instance.fill(values)
+    return instance
   }
 
   /**
@@ -217,6 +348,18 @@ export abstract class BaseModel implements ModelContract {
   constructor () {
     return new Proxy(this, proxyHandler)
   }
+
+  /**
+   * When `fill` method is called, then we may have a situation where it
+   * removed the values which exists in `original` and hence the dirty
+   * diff has to do a negative diff as well
+   */
+  private _fillInvoked: boolean = false
+
+  /**
+   * A copy of cached getters
+   */
+  private _cachedGetters: { [key: string]: CacheNode } = {}
 
   /**
    * Raises exception when mutations are performed on a delete model
@@ -243,7 +386,52 @@ export abstract class BaseModel implements ModelContract {
   }
 
   /**
-   * Returns the constructor for the model.
+   * Returns the attribute value from the cache which was resolved by
+   * the mutated by a getter. This is done to avoid re-mutating
+   * the same attribute value over and over again.
+   */
+  protected $getAttributeFromCache (key: string, callback: CacheNode['getter']): any {
+    const original = this.$getAttribute(key)
+    const cached = this._cachedGetters[key]
+
+    /**
+     * Return the resolved value from cache when cache original is same
+     * as the attribute value
+     */
+    if (cached && cached.original === original) {
+      return cached.resolved
+    }
+
+    /**
+     * Re-resolve the value from the callback
+     */
+    const resolved = callback(original)
+
+    if (!cached) {
+      /**
+       * Create cache entry
+       */
+      this._cachedGetters[key] = { getter: callback, original, resolved }
+    } else {
+      /**
+       * Update original and resolved keys
+       */
+      this._cachedGetters[key].original = original
+      this._cachedGetters[key].resolved = resolved
+    }
+
+    return resolved
+  }
+
+  /**
+   * Returns the related model or default value when model is missing
+   */
+  protected $getRelated (key: string, defaultValue: any): any {
+    return this.$preloaded[key] || defaultValue
+  }
+
+  /**
+   * Returns the constructor for the model typed as Base model
    */
   protected $getConstructor<T extends typeof BaseModel> (): T {
     return this.constructor as T
@@ -254,7 +442,7 @@ export abstract class BaseModel implements ModelContract {
    * to create the object with the property names to be
    * used by the adapter.
    */
-  protected $prepareForAdapter (attributes: any) {
+  protected $prepareForAdapter (attributes: ModelObject) {
     const Model = this.$getConstructor()
     return Object.keys(attributes).reduce((result, key) => {
       result[Model.$getColumn(key)!.castAs] = attributes[key]
@@ -265,13 +453,28 @@ export abstract class BaseModel implements ModelContract {
   /**
    * A copy of attributes that will be sent over to adapter
    */
-  public $attributes: any = {}
+  public $attributes: ModelObject = {}
 
   /**
    * Original represents the properties that already has been
    * persisted or loaded by the adapter.
    */
-  public $original: any = {}
+  public $original: ModelObject = {}
+
+  /**
+   * Preloaded relationships on the model instance
+   */
+  public $preloaded: { [relation: string]: ModelContract | ModelContract[] } = {}
+
+  /**
+   * Sideloaded are dynamic properties set on the model instance, which
+   * are not serialized and neither casted for adapter calls.
+   *
+   * This is helpful when adapter or some other part of the application
+   * want to add meta data to the models, without asking the user to
+   * pre-define properties for them.
+   */
+  public $sideloaded: ModelObject = {}
 
   /**
    * Persisted means the model has been persisted with the adapter. This will
@@ -288,7 +491,9 @@ export abstract class BaseModel implements ModelContract {
   /**
    * Opposite of [[this.$persisted]]
    */
-  public $isNew: boolean = !this.$persisted
+  public get $isNew (): boolean {
+    return !this.$persisted
+  }
 
   /**
    * `$isLocal` tells if the model instance was created locally vs
@@ -301,7 +506,16 @@ export abstract class BaseModel implements ModelContract {
    * between original values and current attributes
    */
   public get $dirty (): any {
-    return Object.keys(this.$attributes).reduce((result, key) => {
+    const processedKeys: string[] = []
+
+    /**
+     * Do not compute diff, when model has never been persisted
+     */
+    if (!this.$persisted) {
+      return this.$attributes
+    }
+
+    const result = Object.keys(this.$attributes).reduce((result, key) => {
       const value = this.$attributes[key]
       const originalValue = this.$original[key]
 
@@ -309,8 +523,26 @@ export abstract class BaseModel implements ModelContract {
         result[key] = value
       }
 
+      if (this._fillInvoked) {
+        processedKeys.push(key)
+      }
+
       return result
     }, {})
+
+    /**
+     * Find negative diff if fill was invoked, since we may have removed values
+     * that exists in originals
+     */
+    if (this._fillInvoked) {
+      Object.keys(this.$original)
+        .filter((key) => !processedKeys.includes(key))
+        .forEach((key) => {
+          result[key] = null
+        })
+    }
+
+    return result
   }
 
   /**
@@ -324,7 +556,7 @@ export abstract class BaseModel implements ModelContract {
    * Persisting the model with adapter insert/update results. This
    * method is invoked after adapter insert/update action.
    */
-  public $consumeAdapterResult (adapterResult: any) {
+  public $consumeAdapterResult (adapterResult: ModelObject, sideloadAttributes?: string[]) {
     const Model = this.$getConstructor()
 
     /**
@@ -346,8 +578,71 @@ export abstract class BaseModel implements ModelContract {
         if (columnName) {
           this.$setAttribute(columnName, adapterResult[key])
         }
+
+        /**
+         * If key is defined as a relation, then set the related data
+         */
+        if (Model.$relations.has(key)) {
+          this.$setRelated(key, adapterResult[key])
+        }
+
+        /**
+         * Set as sideloaded when defined
+         */
+        if (sideloadAttributes && sideloadAttributes.includes(key)) {
+          this.$sideloaded[key] = adapterResult[key]
+        }
       })
     }
+  }
+
+  /**
+   * Sets the related data on the model instance. The method internally handles
+   * `one to one` or `many` relations
+   */
+  public $setRelated (key: string, adapterResult: ModelObject | ModelObject[]) {
+    const Model = this.$getConstructor()
+    const relation = Model.$relations.get(key)
+
+    /**
+     * Ignore when relation is not defined
+     */
+    if (!relation) {
+      return
+    }
+
+    const relatedModel = relation.relatedModel()
+    let sideloadAttributes
+
+    /**
+     * Sideloading pivot object when pivotModel is not defined for many to many
+     * relation
+     */
+    if (relation.type === 'manyToMany') {
+      sideloadAttributes = ['pivot']
+    }
+
+    /**
+     * Instance of model to be set as relationship
+     */
+    let instance
+
+    /**
+     * Create multiple for `hasMany` and one for `belongsTo` and `hasOne`
+     */
+    if (['hasMany', 'manyToMany', 'hasManyThrough'].includes(relation.type)) {
+      instance = relatedModel.$createMultipleFromAdapterResult(
+        adapterResult as ModelObject[],
+        sideloadAttributes,
+      )
+    } else {
+      instance = relatedModel.$createFromAdapterResult(
+        adapterResult,
+        sideloadAttributes,
+      )
+    }
+
+    this.$preloaded[key] = instance
   }
 
   /**
@@ -356,6 +651,44 @@ export abstract class BaseModel implements ModelContract {
    */
   public $hydrateOriginals () {
     this.$original = Object.assign({}, this.$attributes)
+  }
+
+  /**
+   * Set bulk attributes on the model instance. Setting relationships via
+   * fill isn't allowed, since we disallow setting relationships
+   * locally
+   */
+  public fill (values: ModelObject, sideloadAttributes?: string[]) {
+    this.$attributes = {}
+    this.merge(values, sideloadAttributes)
+    this._fillInvoked = true
+  }
+
+  /**
+   * Merge bulk attributes with existing attributes.
+   */
+  public merge (values: ModelObject, sideloadAttributes?: string[]) {
+    const Model = this.$getConstructor()
+
+    /**
+     * Merge result of adapter with the attributes. This enables
+     * the adapter to hydrate models with properties generated
+     * as a result of insert or update
+     */
+    if (isObject(values)) {
+      Object.keys(values).forEach((key) => {
+        if (Model.$hasColumn(key)) {
+          this[key] = values[key]
+        }
+
+        /**
+         * Set as sideloaded when defined
+         */
+        if (sideloadAttributes && sideloadAttributes.includes(key)) {
+          this.$sideloaded[key] = values[key]
+        }
+      })
+    }
   }
 
   /**
@@ -415,6 +748,13 @@ export abstract class BaseModel implements ModelContract {
 
     Object.keys(this.$attributes).forEach((key) => {
       results[Model.$getColumn(key)!.serializeAs] = this.$attributes[key]
+    })
+
+    Object.keys(this.$preloaded).forEach((key) => {
+      const relationValue = this.$preloaded[key]
+      results[Model.$getRelation(key)!.serializeAs] = Array.isArray(relationValue)
+        ? relationValue.map((one) => one.toJSON())
+        : relationValue.toJSON()
     })
 
     return results

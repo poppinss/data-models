@@ -76,7 +76,6 @@
     "anyBranch": false
   },
   "dependencies": {
-    "@poppinss/utils": "^1.0.4",
-    "pascal-case": "^2.0.1"
+    "@poppinss/utils": "^1.0.4"
   }
 }

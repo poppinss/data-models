@@ -11,8 +11,8 @@ import test from 'japa'
 
 import { mapToObj } from '../test-helpers'
 import { BaseModel } from '../src/Model/BaseModel'
-import { column, computed } from '../src/Decorators'
-import { ColumnNode, ComputedNode } from '../src/Contracts'
+import { column, computed, hasOne, manyToMany } from '../src/Decorators'
+import { ColumnNode, ComputedNode, ManyToManyNode } from '../src/Contracts'
 
 test.group('columns', () => {
   test('add multiple columns', (assert) => {
@@ -109,7 +109,9 @@ test.group('columns', () => {
       },
     })
   })
+})
 
+test.group('computed', () => {
   test('mark properties as computed properties', (assert) => {
     class User extends BaseModel {
       @computed()
@@ -121,5 +123,58 @@ test.group('columns', () => {
         serializeAs: 'fullname',
       },
     })
+  })
+})
+
+test.group('relations', () => {
+  test('mark properties as relations', (assert) => {
+    class Profile extends BaseModel {
+    }
+
+    class User extends BaseModel {
+      @hasOne({ relatedModel: () => Profile })
+      public profile: Profile
+    }
+
+    const profile = User.$relations.get('profile')!
+
+    assert.equal(User.$relations.size, 1)
+    assert.deepEqual(profile.relatedModel(), Profile)
+    assert.equal(profile.type, 'hasOne')
+    assert.equal(profile.serializeAs, 'profile')
+  })
+
+  test('define manyToMany relation', (assert) => {
+    class Subject extends BaseModel {
+    }
+
+    class User extends BaseModel {
+      @manyToMany({ relatedModel: () => Subject })
+      public subjects: Subject[]
+    }
+
+    const subjects = User.$relations.get('subjects')! as ManyToManyNode
+
+    assert.equal(User.$relations.size, 1)
+    assert.deepEqual(subjects.relatedModel(), Subject)
+    assert.equal(subjects.type, 'manyToMany')
+    assert.equal(subjects.serializeAs, 'subjects')
+  })
+
+  test('define hasOneThrough relation', (assert) => {
+    class Subject extends BaseModel {
+    }
+
+    class User extends BaseModel {
+      @manyToMany({ relatedModel: () => Subject })
+      public subjects: Subject[]
+    }
+
+    const subjects = User.$relations.get('subjects')! as ManyToManyNode
+
+    assert.equal(User.$relations.size, 1)
+    assert.deepEqual(subjects.relatedModel(), Subject)
+    assert.equal(subjects.type, 'manyToMany')
+    assert.equal(subjects.serializeAs, 'subjects')
   })
 })

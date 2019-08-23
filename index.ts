@@ -1,11 +1,14 @@
-// class User {
-//   public username: string
-// }
+/*
+ * @poppinss/data-models
+ *
+ * (c) Harminder Virk <virk@adonisjs.com>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+*/
 
-// const user = new User()
-// user.username = 'prasanjit'
+import * as decorators from './src/Decorators'
 
-// try {
-//   await user.save()
-// } catch (error) {
-// }
+export * from './src/Contracts'
+export { BaseModel } from './src/Model/BaseModel'
+export { decorators }

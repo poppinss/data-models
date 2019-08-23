@@ -8,9 +8,66 @@
 */
 
 import test from 'japa'
-import { column, computed } from '../src/Decorators'
+
+import { RelationNode, ColumnNode } from '../src/Contracts'
+import { column, computed, belongsTo } from '../src/Decorators'
 import { BaseModel } from '../src/Model/BaseModel'
-import { FakeAdapter } from '../test-helpers'
+import { FakeAdapter, mapToObj } from '../test-helpers'
+
+test.group('Base Model | resolver', () => {
+  test('pull serializeAs and castAs keys from resolver', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      public static $resolver = {
+        getSerializeAsKey (key) {
+          return key.toUpperCase()
+        },
+        getCastAsKey (key) {
+          return key.toUpperCase()
+        },
+        processRelation (_name, _type, options) {
+          return options as unknown as RelationNode
+        },
+      }
+    }
+
+    assert.deepEqual(mapToObj<{ [name: string]: ColumnNode }>(User.$columns), {
+      username: {
+        castAs: 'USERNAME',
+        serializeAs: 'USERNAME',
+        nullable: false,
+        primary: false,
+        hasGetter: false,
+        hasSetter: false,
+      },
+    })
+  })
+
+  test('pull serializeAs name of relation from resolver', (assert) => {
+    class Profile extends BaseModel {}
+
+    class User extends BaseModel {
+      @belongsTo({ relatedModel: () => Profile })
+      public profile: Profile
+
+      public static $resolver = {
+        getSerializeAsKey (key) {
+          return key.toUpperCase()
+        },
+        getCastAsKey (key) {
+          return key.toUpperCase()
+        },
+        processRelation (_name, _type, _orginModel, options) {
+          return options as unknown as RelationNode
+        },
+      }
+    }
+
+    assert.equal(User.$relations.get('profile')!.serializeAs, 'PROFILE')
+  })
+})
 
 test.group('Base Model | getter-setters', () => {
   test('set property on $attributes when defined on model instance', (assert) => {
@@ -112,6 +169,7 @@ test.group('Base Model | dirty', () => {
     const user = new User()
     user.username = 'virk'
     user.$original = { username: 'virk' }
+    user.$persisted = true
 
     assert.deepEqual(user.$dirty, {})
     assert.isFalse(user.$isDirty)
@@ -127,6 +185,7 @@ test.group('Base Model | dirty', () => {
 
     user.$attributes = { username: null }
     user.$original = { username: null }
+    user.$persisted = true
 
     assert.deepEqual(user.$dirty, {})
     assert.isFalse(user.$isDirty)
@@ -142,9 +201,34 @@ test.group('Base Model | dirty', () => {
 
     user.$attributes = { username: false }
     user.$original = { username: false }
+    user.$persisted = true
 
     assert.deepEqual(user.$dirty, {})
     assert.isFalse(user.$isDirty)
+  })
+
+  test('get values removed as a side-effect of fill as dirty', async (assert) => {
+    const adapter = new FakeAdapter()
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column()
+      public age: number
+    }
+    User.$adapter = adapter
+
+    const user = new User()
+    user.username = 'virk'
+    user.age = 22
+    await user.save()
+
+    assert.deepEqual(user.$dirty, {})
+    assert.isFalse(user.$isDirty)
+    assert.isTrue(user.$persisted)
+
+    user.fill({ username: 'virk' })
+    assert.deepEqual(user.$dirty, { age: null })
   })
 })
 
@@ -532,5 +616,140 @@ test.group('Base Model | toJSON', () => {
     user.username = 'virk'
 
     assert.deepEqual(user.toJSON(), { username: 'virk', fullName: 'VIRK' })
+  })
+})
+
+test.group('BaseModel | cache', () => {
+  test('cache getter value', (assert) => {
+    let invokedCounter = 0
+
+    class User extends BaseModel {
+      @column()
+      public get username () {
+        return this.$getAttributeFromCache('username', (value) => {
+          invokedCounter++
+          return value.toUpperCase()
+        })
+      }
+    }
+
+    const user = new User()
+    user.$attributes = { username: 'virk' }
+
+    assert.equal(user.username, 'VIRK')
+    assert.equal(user.username, 'VIRK')
+    assert.equal(user.username, 'VIRK')
+    assert.equal(user.username, 'VIRK')
+    assert.equal(user.username, 'VIRK')
+    assert.equal(invokedCounter, 1)
+  })
+
+  test('re-call getter function when attribute value changes', (assert) => {
+    let invokedCounter = 0
+
+    class User extends BaseModel {
+      @column()
+      public get username () {
+        return this.$getAttributeFromCache('username', (value) => {
+          invokedCounter++
+          return value.toUpperCase()
+        })
+      }
+    }
+
+    const user = new User()
+    user.$attributes = { username: 'virk' }
+
+    assert.equal(user.username, 'VIRK')
+
+    user.$attributes.username = 'Prasanjit'
+    assert.equal(user.username, 'PRASANJIT')
+    assert.equal(user.username, 'PRASANJIT')
+    assert.equal(user.username, 'PRASANJIT')
+    assert.equal(user.username, 'PRASANJIT')
+
+    assert.equal(invokedCounter, 2)
+  })
+})
+
+test.group('BaseModel | fill/merge', () => {
+  test('fill model instance with bulk attributes', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    const user = new User()
+    user.fill({ username: 'virk', isAdmin: true })
+    assert.deepEqual(user.$attributes, { username: 'virk' })
+  })
+
+  test('set sideload properties via fill', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    const user = new User()
+    user.fill({ username: 'virk', isAdmin: true }, ['isAdmin'])
+    assert.deepEqual(user.$attributes, { username: 'virk' })
+    assert.deepEqual(user.$sideloaded, { isAdmin: true })
+  })
+
+  test('overwrite existing values when using fill', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column()
+      public age: number
+    }
+
+    const user = new User()
+    user.age = 22
+
+    assert.deepEqual(user.$attributes, { age: 22 })
+    user.fill({ username: 'virk', isAdmin: true })
+    assert.deepEqual(user.$attributes, { username: 'virk' })
+  })
+
+  test('merge to existing when using merge instead of fill', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column()
+      public age: number
+    }
+
+    const user = new User()
+    user.age = 22
+
+    assert.deepEqual(user.$attributes, { age: 22 })
+    user.merge({ username: 'virk', isAdmin: true })
+    assert.deepEqual(user.$attributes, { username: 'virk', age: 22 })
+  })
+
+  test('invoke setter when using fill', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column()
+      public get age (): number {
+        return this.$getAttribute('age')
+      }
+
+      public set age (age: number) {
+        this.$setAttribute('age', age + 1)
+      }
+    }
+
+    const user = new User()
+    user.age = 22
+
+    assert.deepEqual(user.$attributes, { age: 23 })
+    user.fill({ username: 'virk', age: 22 })
+    assert.deepEqual(user.$attributes, { username: 'virk', age: 23 })
   })
 })

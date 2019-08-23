@@ -8,6 +8,28 @@
 */
 
 import { ModelConstructorContract } from '../Contracts'
+import { Exception } from '@poppinss/utils'
+
+/**
+ * Value to return when relationship is not preloaded
+ * with the model instance.
+ *
+ * We are re-using the defaults from a static source to avoid creating empty arrays
+ * everytime someone access the relationship. However, as a downside, if someone
+ * decides to mutate the array, that will mutate the source and hence we
+ * freeze the arrays.
+ *
+ * The `Object.freeze` however doesn't stop one from defining values for a specific
+ * index.
+ */
+const DEFAULTS = {
+  hasOne: null,
+  hasMany: Object.freeze([]),
+  belongsTo: null,
+  manyToMany: Object.freeze([]),
+  hasManyThrough: Object.freeze([]),
+  hasOneThrough: null,
+}
 
 /**
  * A proxy trap to add support for custom getters and setters
@@ -18,16 +40,22 @@ export const proxyHandler = {
     const column = Model.$getColumn(key)
 
     /**
-     * Forward prxoxy when value is not a column
+     * Fetch the attribute value, when attribute exists and
+     * doesn't have a getter
      */
-    if (!column || column.hasGetter) {
-      return Reflect.get(target, key)
+    if (column && !column.hasGetter) {
+      return target.$getAttribute(key)
     }
 
     /**
-     * Fallback to `getAttribute` function
+     * Fetch the relation when property is defined as a relationship
      */
-    return target.$getAttribute(key)
+    const relation = Model.$getRelation(key)
+    if (relation) {
+      return target.$getRelated(key, DEFAULTS[relation.type])
+    }
+
+    return Reflect.get(target, key)
   },
 
   set (target: any, key: any, value: any) {
@@ -35,16 +63,22 @@ export const proxyHandler = {
     const column = Model.$getColumn(key)
 
     /**
-     * Forward prxoxy when value is not a column
+     * Set value as an attribute when column is defined and
+     * their isn't any setter for it.
      */
-    if (!column || column.hasSetter) {
-      return Reflect.set(target, key, value)
+    if (column && !column.hasSetter) {
+      target.$setAttribute(key, value)
+      return true
     }
 
     /**
-     * Fallback to `setAttribute` function
+     * Fetch the relation when property is defined as a relationship
      */
-    target.$setAttribute(key, value)
-    return true
+    const relation = Model.$getRelation(key)
+    if (relation) {
+      throw new Exception('Cannot set relationships locally', 500, 'E_CANNOT_DEFINE_RELATIONSHIP')
+    }
+
+    return Reflect.set(target, key, value)
   },
 }
