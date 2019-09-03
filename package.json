@@ -1,6 +1,6 @@
 {
   "name": "@poppinss/data-models",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Abstract data models with first class support for relationships",
   "main": "build/index.js",
   "files": [
