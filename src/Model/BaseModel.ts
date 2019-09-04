@@ -487,6 +487,21 @@ export abstract class BaseModel implements ModelContract {
   public $isDeleted: boolean = false
 
   /**
+   * Returns the value of primary key. The value must be
+   * set inside attributes object
+   */
+  public get $primaryKeyValue (): any | undefined {
+    const model = this.constructor as typeof BaseModel
+    const column = model.$getColumn(model.$primaryKey)
+
+    if (column && column.hasGetter) {
+      return this[model.$primaryKey]
+    }
+
+    return this.$getAttribute(model.$primaryKey)
+  }
+
+  /**
    * Opposite of [[this.$persisted]]
    */
   public get $isNew (): boolean {

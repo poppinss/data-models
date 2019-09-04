@@ -144,6 +144,38 @@ test.group('Base Model | getter-setters', () => {
     const user = new User()
     assert.equal(user.username, 'virk')
   })
+
+  test('get value for primary key', (assert) => {
+    class User extends BaseModel {
+      @column({ primary: true })
+      public id: number
+
+      @column()
+      public username: string
+    }
+
+    const user = new User()
+    user.$attributes = { username: 'virk', id: 1 }
+
+    assert.deepEqual(user.$primaryKeyValue, 1)
+  })
+
+  test('invoke getter when accessing value using $primaryKeyValue', (assert) => {
+    class User extends BaseModel {
+      @column({ primary: true })
+      public get id () {
+        return String(this.$getAttribute('id'))
+      }
+
+      @column()
+      public username: string
+    }
+
+    const user = new User()
+    user.$attributes = { username: 'virk', id: 1 }
+
+    assert.deepEqual(user.$primaryKeyValue, '1')
+  })
 })
 
 test.group('Base Model | dirty', () => {

@@ -126,6 +126,7 @@ export interface ModelContract {
   $isDeleted: boolean
   $preloaded: { [relation: string]: ModelContract | ModelContract[] }
   $sideloaded: ModelObject
+  $primaryKeyValue?: any
 
   $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void
   $setRelated (key: string, result: ModelObject): void
