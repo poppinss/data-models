@@ -37,7 +37,7 @@
   "homepage": "https://github.com/poppinss/data-models#readme",
   "devDependencies": {
     "@adonisjs/mrm-preset": "^2.1.0",
-    "@types/node": "^12.7.3",
+    "@types/node": "^12.7.4",
     "commitizen": "^4.0.3",
     "cz-conventional-changelog": "^3.0.2",
     "del-cli": "^2.0.0",
