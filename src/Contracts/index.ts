@@ -127,7 +127,6 @@ export interface ModelContract {
   $preloaded: { [relation: string]: ModelContract | ModelContract[] }
   $sideloaded: ModelObject
 
-  $getConstructor (): ModelConstructorContract
   $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void
   $setRelated (key: string, result: ModelObject): void
   $hydrateOriginals (): void
@@ -158,8 +157,15 @@ export interface ModelConstructorContract {
   /**
    * Creating model from adapter results
    */
-  $createFromAdapterResult (result?: ModelObject, sideloadAttributes?: string[]): null | ModelContract
-  $createMultipleFromAdapterResult (results: ModelObject[], sideloadAttributes?: string[]): ModelContract[]
+  $createFromAdapterResult (
+    result?: ModelObject,
+    sideloadAttributes?: string[],
+  ): null | ModelContract
+
+  $createMultipleFromAdapterResult (
+    results: ModelObject[],
+    sideloadAttributes?: string[],
+  ): ModelContract[]
 
   /**
    * Managing columns

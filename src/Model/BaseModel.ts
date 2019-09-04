@@ -441,7 +441,7 @@ export abstract class BaseModel implements ModelContract {
    * used by the adapter.
    */
   protected $prepareForAdapter (attributes: ModelObject) {
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
     return Object.keys(attributes).reduce((result, key) => {
       result[Model.$getColumn(key)!.castAs] = attributes[key]
       return result
@@ -551,18 +551,11 @@ export abstract class BaseModel implements ModelContract {
   }
 
   /**
-   * Returns the constructor for the model typed as Base model
-   */
-  public $getConstructor<T extends typeof BaseModel> (): T {
-    return this.constructor as T
-  }
-
-  /**
    * Persisting the model with adapter insert/update results. This
    * method is invoked after adapter insert/update action.
    */
   public $consumeAdapterResult (adapterResult: ModelObject, sideloadAttributes?: string[]) {
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
 
     /**
      * Merge result of adapter with the attributes. This enables
@@ -606,7 +599,7 @@ export abstract class BaseModel implements ModelContract {
    * `one to one` or `many` relations
    */
   public $setRelated (key: string, adapterResult: ModelObject | ModelObject[]) {
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
     const relation = Model.$relations.get(key)
 
     /**
@@ -617,7 +610,7 @@ export abstract class BaseModel implements ModelContract {
     }
 
     const relatedModel = relation.relatedModel()
-    let sideloadAttributes
+    let sideloadAttributes: string[] = []
 
     /**
      * Sideloading pivot object when pivotModel is not defined for many to many
@@ -630,7 +623,7 @@ export abstract class BaseModel implements ModelContract {
     /**
      * Instance of model to be set as relationship
      */
-    let instance
+    let instance: (ModelContract | ModelContract[] | null)
 
     /**
      * Create multiple for `hasMany` and one for `belongsTo` and `hasOne`
@@ -647,7 +640,9 @@ export abstract class BaseModel implements ModelContract {
       )
     }
 
-    this.$preloaded[key] = instance
+    if (instance) {
+      this.$preloaded[key] = instance
+    }
   }
 
   /**
@@ -673,7 +668,7 @@ export abstract class BaseModel implements ModelContract {
    * Merge bulk attributes with existing attributes.
    */
   public merge (values: ModelObject, sideloadAttributes?: string[]) {
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
 
     /**
      * Merge result of adapter with the attributes. This enables
@@ -701,7 +696,7 @@ export abstract class BaseModel implements ModelContract {
    */
   public async save () {
     this._ensureIsntDeleted()
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
 
     /**
      * Persit the model when it's not persisted already
@@ -735,7 +730,7 @@ export abstract class BaseModel implements ModelContract {
    */
   public async delete () {
     this._ensureIsntDeleted()
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
     await Model.$adapter.delete(this)
     this.$isDeleted = true
   }
@@ -744,7 +739,7 @@ export abstract class BaseModel implements ModelContract {
    * Converting model to it's JSON representation
    */
   public toJSON () {
-    const Model = this.$getConstructor()
+    const Model = this.constructor as typeof BaseModel
     const results = {}
 
     Model.$computed.forEach((value, key) => {
