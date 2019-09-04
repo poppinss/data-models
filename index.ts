@@ -10,3 +10,4 @@
 export * from './src/Contracts'
 export * from './src/Decorators'
 export { BaseModel } from './src/Model/BaseModel'
+export { StaticImplements } from './src/utils'
