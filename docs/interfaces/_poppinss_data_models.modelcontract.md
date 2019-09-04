@@ -30,12 +30,12 @@ and `toJSON`.
 * [$original](_poppinss_data_models.modelcontract.md#$original)
 * [$persisted](_poppinss_data_models.modelcontract.md#$persisted)
 * [$preloaded](_poppinss_data_models.modelcontract.md#$preloaded)
+* [$primaryKeyValue](_poppinss_data_models.modelcontract.md#optional-$primarykeyvalue)
 * [$sideloaded](_poppinss_data_models.modelcontract.md#$sideloaded)
 
 ### Methods
 
 * [$consumeAdapterResult](_poppinss_data_models.modelcontract.md#$consumeadapterresult)
-* [$getConstructor](_poppinss_data_models.modelcontract.md#$getconstructor)
 * [$hydrateOriginals](_poppinss_data_models.modelcontract.md#$hydrateoriginals)
 * [$setRelated](_poppinss_data_models.modelcontract.md#$setrelated)
 * [delete](_poppinss_data_models.modelcontract.md#delete)
@@ -104,6 +104,12 @@ ___
 
 ___
 
+### `Optional` $primaryKeyValue
+
+• **$primaryKeyValue**? : *any*
+
+___
+
 ###  $sideloaded
 
 • **$sideloaded**: *[ModelObject](_poppinss_data_models.modelobject.md)*
@@ -122,14 +128,6 @@ Name | Type |
 `sideloadAttributes?` | string[] |
 
 **Returns:** *void*
-
-___
-
-###  $getConstructor
-
-▸ **$getConstructor**(): *[ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)*
-
-**Returns:** *[ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)*
 
 ___
 

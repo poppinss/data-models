@@ -42,13 +42,13 @@ Abstract class to define fully fledged data models
 * [$dirty](_src_model_basemodel_.basemodel.md#$dirty)
 * [$isDirty](_src_model_basemodel_.basemodel.md#$isdirty)
 * [$isNew](_src_model_basemodel_.basemodel.md#$isnew)
+* [$primaryKeyValue](_src_model_basemodel_.basemodel.md#$primarykeyvalue)
 
 ### Methods
 
 * [$consumeAdapterResult](_src_model_basemodel_.basemodel.md#$consumeadapterresult)
 * [$getAttribute](_src_model_basemodel_.basemodel.md#protected-$getattribute)
 * [$getAttributeFromCache](_src_model_basemodel_.basemodel.md#protected-$getattributefromcache)
-* [$getConstructor](_src_model_basemodel_.basemodel.md#$getconstructor)
 * [$getRelated](_src_model_basemodel_.basemodel.md#protected-$getrelated)
 * [$hydrateOriginals](_src_model_basemodel_.basemodel.md#$hydrateoriginals)
 * [$prepareForAdapter](_src_model_basemodel_.basemodel.md#protected-$prepareforadapter)
@@ -258,6 +258,17 @@ Opposite of [[this.$persisted]]
 
 **Returns:** *boolean*
 
+___
+
+###  $primaryKeyValue
+
+• **get $primaryKeyValue**(): *any | undefined*
+
+Returns the value of primary key. The value must be
+set inside attributes object
+
+**Returns:** *any | undefined*
+
 ## Methods
 
 ###  $consumeAdapterResult
@@ -319,22 +330,6 @@ Name | Type |
 `value` | any |
 
 **Returns:** *any*
-
-___
-
-###  $getConstructor
-
-▸ **$getConstructor**<**T**>(): *T*
-
-*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
-
-Returns the constructor for the model typed as Base model
-
-**Type parameters:**
-
-▪ **T**: *[BaseModel](_src_model_basemodel_.basemodel.md)*
-
-**Returns:** *T*
 
 ___
 
