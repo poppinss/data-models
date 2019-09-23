@@ -15,7 +15,7 @@
  * Returns whether value is valid object or not
  */
 export function isObject (value: any): boolean {
-  return value && value.constructor.name === 'Object'
+  return value !== null && typeof value === 'object' && Array.isArray(value) === false
 }
 
 /**
