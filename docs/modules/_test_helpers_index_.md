@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › ["test-helpers/index"](_test_helpers_index_.md)
+[@poppinss/data-models](../README.md) › ["test-helpers/index"](_test_helpers_index_.md)
 
 # External module: "test-helpers/index"
 

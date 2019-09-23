@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [HasManyThrough](_poppinss_data_models.hasmanythrough.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [HasManyThrough](_poppinss_data_models.hasmanythrough.md)
 
 # Interface: HasManyThrough
 
@@ -10,7 +8,7 @@ Shape of hasManyThrough relationship
 
 * [BaseRelationNode](_poppinss_data_models.baserelationnode.md)
 
-  * **HasManyThrough**
+  ↳ **HasManyThrough**
 
 ## Index
 

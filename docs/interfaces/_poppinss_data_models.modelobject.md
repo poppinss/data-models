@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ModelObject](_poppinss_data_models.modelobject.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ModelObject](_poppinss_data_models.modelobject.md)
 
 # Interface: ModelObject
 

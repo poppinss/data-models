@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › ["src/Model/proxyHandler"](_src_model_proxyhandler_.md)
+[@poppinss/data-models](../README.md) › ["src/Model/proxyHandler"](_src_model_proxyhandler_.md)
 
 # External module: "src/Model/proxyHandler"
 

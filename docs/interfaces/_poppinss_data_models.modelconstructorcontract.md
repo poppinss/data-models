@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)
 
 # Interface: ModelConstructorContract
 
@@ -131,7 +129,7 @@ Managing relationships
 Name | Type |
 ------ | ------ |
 `name` | string |
-`type` | "belongsTo" \| "hasOne" \| "hasMany" \| "manyToMany" \| "hasOneThrough" \| "hasManyThrough" |
+`type` | "belongsTo" &#124; "hasOne" &#124; "hasMany" &#124; "manyToMany" &#124; "hasOneThrough" &#124; "hasManyThrough" |
 `options` | Partial‹[RelationNode](../modules/_poppinss_data_models.md#relationnode)› |
 
 **Returns:** *void*

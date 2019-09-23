@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [BelongsToNode](_poppinss_data_models.belongstonode.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [BelongsToNode](_poppinss_data_models.belongstonode.md)
 
 # Interface: BelongsToNode
 
@@ -10,7 +8,7 @@ Shape of belongsTo relationship
 
 * [BaseRelationNode](_poppinss_data_models.baserelationnode.md)
 
-  * **BelongsToNode**
+  ↳ **BelongsToNode**
 
 ## Index
 

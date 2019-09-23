@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › ["src/Model/BaseModel"](../modules/_src_model_basemodel_.md) › [BaseModel](_src_model_basemodel_.basemodel.md)
+[@poppinss/data-models](../README.md) › ["src/Model/BaseModel"](../modules/_src_model_basemodel_.md) › [BaseModel](_src_model_basemodel_.basemodel.md)
 
 # Class: BaseModel
 
@@ -410,7 +408,7 @@ Sets the related data on the model instance. The method internally handles
 Name | Type |
 ------ | ------ |
 `key` | string |
-`adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) \| [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[] |
+`adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) &#124; [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[] |
 
 **Returns:** *void*
 
@@ -538,7 +536,7 @@ Adds a relationship
 Name | Type |
 ------ | ------ |
 `name` | string |
-`type` | "belongsTo" \| "hasOne" \| "hasMany" \| "manyToMany" \| "hasOneThrough" \| "hasManyThrough" |
+`type` | "belongsTo" &#124; "hasOne" &#124; "hasMany" &#124; "manyToMany" &#124; "hasOneThrough" &#124; "hasManyThrough" |
 `options` | Omit‹Partial‹[RelationNode](../modules/_poppinss_data_models.md#relationnode)›, "type"› |
 
 **Returns:** *void*

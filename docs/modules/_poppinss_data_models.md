@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](_poppinss_data_models.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](_poppinss_data_models.md)
 
 # External module: @poppinss/data-models
 

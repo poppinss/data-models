@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [AdapterContract](_poppinss_data_models.adaptercontract.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [AdapterContract](_poppinss_data_models.adaptercontract.md)
 
 # Interface: AdapterContract
 

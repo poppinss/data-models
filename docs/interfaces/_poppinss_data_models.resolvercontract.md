@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ResolverContract](_poppinss_data_models.resolvercontract.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ResolverContract](_poppinss_data_models.resolvercontract.md)
 
 # Interface: ResolverContract
 
@@ -58,7 +56,7 @@ ___
 Name | Type |
 ------ | ------ |
 `relationName` | string |
-`type` | "belongsTo" \| "hasOne" \| "hasMany" \| "manyToMany" \| "hasOneThrough" \| "hasManyThrough" |
+`type` | "belongsTo" &#124; "hasOne" &#124; "hasMany" &#124; "manyToMany" &#124; "hasOneThrough" &#124; "hasManyThrough" |
 `originModel` | [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md) |
 `options` | Partial‹[RelationNode](../modules/_poppinss_data_models.md#relationnode)› |
 

@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ManyToManyNode](_poppinss_data_models.manytomanynode.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [ManyToManyNode](_poppinss_data_models.manytomanynode.md)
 
 # Interface: ManyToManyNode
 
@@ -10,7 +8,7 @@ Shape of hasMany relationship
 
 * [BaseRelationNode](_poppinss_data_models.baserelationnode.md)
 
-  * **ManyToManyNode**
+  ↳ **ManyToManyNode**
 
 ## Index
 

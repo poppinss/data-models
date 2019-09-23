@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [BaseRelationNode](_poppinss_data_models.baserelationnode.md)
+[@poppinss/data-models](../README.md) › [@poppinss/data-models](../modules/_poppinss_data_models.md) › [BaseRelationNode](_poppinss_data_models.baserelationnode.md)
 
 # Interface: BaseRelationNode
 
@@ -10,17 +8,17 @@ Shape of the relationships node
 
 * **BaseRelationNode**
 
-  * [BelongsToNode](_poppinss_data_models.belongstonode.md)
+  ↳ [BelongsToNode](_poppinss_data_models.belongstonode.md)
 
-  * [HasOneNode](_poppinss_data_models.hasonenode.md)
+  ↳ [HasOneNode](_poppinss_data_models.hasonenode.md)
 
-  * [HasManyNode](_poppinss_data_models.hasmanynode.md)
+  ↳ [HasManyNode](_poppinss_data_models.hasmanynode.md)
 
-  * [ManyToManyNode](_poppinss_data_models.manytomanynode.md)
+  ↳ [ManyToManyNode](_poppinss_data_models.manytomanynode.md)
 
-  * [HasOneThrough](_poppinss_data_models.hasonethrough.md)
+  ↳ [HasOneThrough](_poppinss_data_models.hasonethrough.md)
 
-  * [HasManyThrough](_poppinss_data_models.hasmanythrough.md)
+  ↳ [HasManyThrough](_poppinss_data_models.hasmanythrough.md)
 
 ## Index
 

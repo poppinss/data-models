@@ -1,6 +1,6 @@
-**[@poppinss/data-models](README.md)**
+[@poppinss/data-models](README.md)
 
-[Globals](README.md)
+# @poppinss/data-models
 
 ## Index
 

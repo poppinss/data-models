@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › ["src/Decorators/index"](_src_decorators_index_.md)
+[@poppinss/data-models](../README.md) › ["src/Decorators/index"](_src_decorators_index_.md)
 
 # External module: "src/Decorators/index"
 

@@ -1,6 +1,4 @@
-**[@poppinss/data-models](../README.md)**
-
-[Globals](../README.md) › ["test-helpers/index"](../modules/_test_helpers_index_.md) › [FakeAdapter](_test_helpers_index_.fakeadapter.md)
+[@poppinss/data-models](../README.md) › ["test-helpers/index"](../modules/_test_helpers_index_.md) › [FakeAdapter](_test_helpers_index_.fakeadapter.md)
 
 # Class: FakeAdapter
 
