@@ -23,17 +23,18 @@ export class FakeAdapter implements AdapterContract {
   private _invokeHandler (
     action: keyof FakeAdapter['_handlers'],
     model: ModelContract | ModelConstructorContract,
+    options?: any,
   ) {
     if (typeof (this._handlers[action]) === 'function') {
-      return this._handlers[action](model)
+      return this._handlers[action](model, options)
     }
   }
 
   public on (action: 'insert', handler: ((model: ModelContract) => void)): void
   public on (action: 'update', handler: ((model: ModelContract) => void)): void
   public on (action: 'delete', handler: ((model: ModelContract) => void)): void
-  public on (action: 'find', handler: ((model: ModelConstructorContract) => void)): void
-  public on (action: 'findAll', handler: ((model: ModelConstructorContract) => void)): void
+  public on (action: 'find', handler: ((model: ModelConstructorContract, options?: any) => void)): void
+  public on (action: 'findAll', handler: ((model: ModelConstructorContract, options?: any) => void)): void
   public on (
     action: string,
     handler: ((model: ModelContract) => void) | ((model: ModelConstructorContract) => void),
@@ -56,14 +57,24 @@ export class FakeAdapter implements AdapterContract {
     return this._invokeHandler('update', instance)
   }
 
-  public async find (model: ModelConstructorContract, key: string, value: any) {
-    this.operations.push({ type: 'find', model, key, value })
-    return this._invokeHandler('find', model)
+  public async find (model: ModelConstructorContract, key: string, value: any, options?: any) {
+    const payload: any = { type: 'find', model, key, value }
+    if (options) {
+      payload.options = options
+    }
+
+    this.operations.push(payload)
+    return this._invokeHandler('find', model, options)
   }
 
-  public async findAll (model: ModelConstructorContract) {
-    this.operations.push({ type: 'findAll', model })
-    return this._invokeHandler('findAll', model)
+  public async findAll (model: ModelConstructorContract, options?: any) {
+    const payload: any = { type: 'findAll', model }
+    if (options) {
+      payload.options = options
+    }
+
+    this.operations.push(payload)
+    return this._invokeHandler('findAll', model, options)
   }
 }
 

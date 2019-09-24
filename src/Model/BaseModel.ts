@@ -134,6 +134,7 @@ export abstract class BaseModel implements ModelContract {
     this: new () => T,
     adapterResult: ModelObject,
     sideloadAttributes?: string[],
+    options?: any,
   ): T | null {
     if (!isObject(adapterResult)) {
       return null
@@ -144,6 +145,11 @@ export abstract class BaseModel implements ModelContract {
     instance.$hydrateOriginals()
     instance.$persisted = true
     instance.$isLocal = false
+
+    if (options) {
+      instance.$options = options
+    }
+
     return instance
   }
 
@@ -158,6 +164,7 @@ export abstract class BaseModel implements ModelContract {
     this: new () => T,
     adapterResults: ModelObject[],
     sideloadAttributes?: string[],
+    options?: any,
   ): T[] {
     if (!Array.isArray(adapterResults)) {
       return []
@@ -165,7 +172,7 @@ export abstract class BaseModel implements ModelContract {
 
     return adapterResults.reduce((models, row) => {
       if (isObject(row)) {
-        models.push(this['$createFromAdapterResult'](row, sideloadAttributes))
+        models.push(this['$createFromAdapterResult'](row, sideloadAttributes, options))
       }
       return models
     }, []) as T[]
@@ -339,15 +346,16 @@ export abstract class BaseModel implements ModelContract {
     this: new () => T,
     key: string,
     value: any,
+    options?: any,
   ): Promise<null | T> {
-    return this['$adapter'].find(this, key, value)
+    return this['$adapter'].find(this, key, value, options)
   }
 
   /**
    * Create a array of model instances from the adapter result
    */
-  public static async findAll <T extends ModelContract> (this: new () => T): Promise<T[]> {
-    return this['$adapter'].findAll(this)
+  public static async findAll <T extends ModelContract> (this: new () => T, options?: any): Promise<T[]> {
+    return this['$adapter'].findAll(this, options)
   }
 
   constructor () {
@@ -485,6 +493,12 @@ export abstract class BaseModel implements ModelContract {
    * Once deleted the model instance cannot make calls to the adapter
    */
   public $isDeleted: boolean = false
+
+  /**
+   * Custom options defined on the model instance that are
+   * passed to the adapter
+   */
+  public $options: any
 
   /**
    * Returns the value of primary key. The value must be
@@ -647,11 +661,13 @@ export abstract class BaseModel implements ModelContract {
       instance = relatedModel.$createMultipleFromAdapterResult(
         adapterResult as ModelObject[],
         sideloadAttributes,
+        this.$options,
       )
     } else {
       instance = relatedModel.$createFromAdapterResult(
         adapterResult,
         sideloadAttributes,
+        this.$options,
       )
     }
 

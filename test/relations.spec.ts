@@ -291,4 +291,68 @@ test.group('Model | relations', () => {
       },
     })
   })
+
+  test('pass model options to one to many related models', (assert) => {
+    class Subject extends BaseModel {
+      @column()
+      public title: string
+    }
+
+    class User extends BaseModel {
+      @column({ primary: true })
+      public id: number
+
+      @manyToMany({ relatedModel: () => Subject })
+      public subjects: Subject[]
+    }
+
+    const user = new User()
+    user.$options = { connection: 'foo' }
+    user.$consumeAdapterResult({
+      id: 1,
+      subjects: [{
+        title: 'Maths',
+        pivot: {
+          id: 1,
+          enrolled: true,
+        },
+      }],
+    })
+
+    assert.lengthOf((user.$preloaded.subjects as ModelContract[]), 1)
+    assert.instanceOf(user.$preloaded.subjects[0], Subject)
+
+    assert.lengthOf(user.subjects, 1)
+    assert.equal(user.subjects[0].title, 'Maths')
+    assert.deepEqual(user.subjects[0].$options, { connection: 'foo' })
+    assert.deepEqual(user.subjects[0].$sideloaded.pivot, { id: 1, enrolled: true })
+  })
+
+  test('pass model options to one to one related models', (assert) => {
+    class Profile extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    class User extends BaseModel {
+      @column({ primary: true })
+      public id: number
+
+      @hasOne({ relatedModel: () => Profile })
+      public profile: Profile
+    }
+
+    const user = new User()
+    user.$options = { connection: 'foo' }
+    user.$consumeAdapterResult({
+      id: 1,
+      profile: {
+        username: 'virk',
+      },
+    })
+
+    assert.deepEqual(user.profile.username, 'virk')
+    assert.instanceOf(user.$preloaded.profile, Profile)
+    assert.deepEqual((user.$preloaded.profile as Profile).$options, { connection: 'foo' })
+  })
 })

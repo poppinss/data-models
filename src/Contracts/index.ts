@@ -127,6 +127,7 @@ export interface ModelContract {
   $preloaded: { [relation: string]: ModelContract | ModelContract[] }
   $sideloaded: ModelObject
   $primaryKeyValue?: any
+  $options?: any
 
   $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void
   $setRelated (key: string, result: ModelObject): void
@@ -161,11 +162,13 @@ export interface ModelConstructorContract {
   $createFromAdapterResult (
     result?: ModelObject,
     sideloadAttributes?: string[],
+    options?: any,
   ): null | ModelContract
 
   $createMultipleFromAdapterResult (
     results: ModelObject[],
     sideloadAttributes?: string[],
+    options?: any,
   ): ModelContract[]
 
   /**
@@ -197,8 +200,8 @@ export interface ModelConstructorContract {
   /**
    * Creating model by invoking actions on adapter
    */
-  findBy (key: string, value: any): Promise<null | ModelContract>
-  findAll (): Promise<ModelContract[]>
+  findBy (key: string, value: any, options?: any): Promise<null | ModelContract>
+  findAll (options?: any): Promise<ModelContract[]>
 }
 
 /**
@@ -208,8 +211,13 @@ export interface AdapterContract {
   delete (instance: ModelContract): Promise<void>
   insert (instance: ModelContract, attributes: any): Promise<void>
   update (instance: ModelContract, attributes: any): Promise<void>
-  find (model: ModelConstructorContract, key: string, value: any): Promise<null | ModelContract>
-  findAll (model: ModelConstructorContract): Promise<ModelContract[]>
+  find (
+    model: ModelConstructorContract,
+    key: string,
+    value: any,
+    options?: any,
+  ): Promise<null | ModelContract>
+  findAll (model: ModelConstructorContract, options?: any): Promise<ModelContract[]>
 }
 
 /**

@@ -476,6 +476,40 @@ test.group('Base Model | fetch', () => {
     assert.deepEqual(user!.$original, { username: 'virk' })
   })
 
+  test('set options on model instance passed to $createFromAdapterResult', async (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column({ castAs: 'full_name' })
+      public fullName: string
+    }
+
+    adapter.on('find', (model) => {
+      return model.$createFromAdapterResult({ username: 'virk' }, [], { connection: 'foo' })
+    })
+    User.$adapter = adapter
+
+    const user = await User.findBy('username', 'virk')
+    user!.username = 'virk'
+
+    assert.deepEqual(user!.$options, { connection: 'foo' })
+    assert.isTrue(user!.$persisted)
+    assert.isFalse(user!.$isDirty)
+    assert.isFalse(user!.$isLocal)
+    assert.deepEqual(adapter.operations, [{
+      type: 'find',
+      model: User,
+      key: 'username',
+      value: 'virk',
+    }])
+
+    assert.deepEqual(user!.$attributes, { username: 'virk' })
+    assert.deepEqual(user!.$original, { username: 'virk' })
+  })
+
   test('return null when adapter doesn\'t returns an object', async (assert) => {
     const adapter = new FakeAdapter()
 
@@ -529,6 +563,49 @@ test.group('Base Model | fetch', () => {
     assert.isTrue(users[1].$persisted)
     assert.isFalse(users[1].$isDirty)
     assert.isFalse(users[1].$isLocal)
+    assert.deepEqual(users[1].$attributes, { username: 'prasan' })
+    assert.deepEqual(users[1].$original, { username: 'prasan' })
+  })
+
+  test('pass options to an array of model instance', async (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+
+      @column({ castAs: 'full_name' })
+      public fullName: string
+    }
+
+    adapter.on('findAll', (model) => {
+      return model.$createMultipleFromAdapterResult(
+        [{ username: 'virk', full_name: 'H virk' }, { username: 'prasan' }],
+        [],
+        { connection: 'foo' },
+      )
+    })
+    User.$adapter = adapter
+
+    const users = await User.findAll()
+    assert.lengthOf(users, 2)
+
+    assert.deepEqual(adapter.operations, [{
+      type: 'findAll',
+      model: User,
+    }])
+
+    assert.isTrue(users[0].$persisted)
+    assert.isFalse(users[0].$isDirty)
+    assert.isFalse(users[0].$isLocal)
+    assert.deepEqual(users[0].$options, { connection: 'foo' })
+    assert.deepEqual(users[0].$attributes, { username: 'virk', fullName: 'H virk' })
+    assert.deepEqual(users[0].$original, { username: 'virk', fullName: 'H virk' })
+
+    assert.isTrue(users[1].$persisted)
+    assert.isFalse(users[1].$isDirty)
+    assert.isFalse(users[1].$isLocal)
+    assert.deepEqual(users[1].$options, { connection: 'foo' })
     assert.deepEqual(users[1].$attributes, { username: 'prasan' })
     assert.deepEqual(users[1].$original, { username: 'prasan' })
   })
@@ -783,5 +860,127 @@ test.group('BaseModel | fill/merge', () => {
     assert.deepEqual(user.$attributes, { age: 23 })
     user.fill({ username: 'virk', age: 22 })
     assert.deepEqual(user.$attributes, { username: 'virk', age: 23 })
+  })
+})
+
+test.group('Base | apdater', () => {
+  test('pass model constructor and custom options to find method', (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    User.$adapter = adapter
+    User.findBy('foo', 'bar', { connection: 'foo' })
+    assert.deepEqual(adapter.operations, [{
+      type: 'find',
+      key: 'foo',
+      value: 'bar',
+      options: { connection: 'foo' },
+      model: User,
+    }])
+  })
+
+  test('pass model constructor and custom options to findAll method', (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    User.$adapter = adapter
+    User.findAll({ connection: 'foo' })
+
+    assert.deepEqual(adapter.operations, [{
+      type: 'findAll',
+      options: { connection: 'foo' },
+      model: User,
+    }])
+  })
+
+  test('pass model instance with attributes to the adapter insert method', async (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    User.$adapter = adapter
+    const user = new User()
+    user.username = 'virk'
+    user.$options = { connection: 'foo' }
+
+    await user.save()
+
+    assert.deepEqual(adapter.operations, [{
+      type: 'insert',
+      instance: user,
+      attributes: { username: 'virk' },
+    }])
+  })
+
+  test('pass model instance with attributes to the adapter update method', async (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    User.$adapter = adapter
+    const user = new User()
+    user.username = 'virk'
+    user.$options = { connection: 'foo' }
+
+    await user.save()
+
+    user.username = 'nikk'
+    await user.save()
+
+    assert.deepEqual(adapter.operations, [
+      {
+        type: 'insert',
+        instance: user,
+        attributes: { username: 'virk' },
+      },
+      {
+        type: 'update',
+        instance: user,
+        attributes: { username: 'nikk' },
+      },
+    ])
+  })
+
+  test('pass model instance to the adapter delete method', async (assert) => {
+    const adapter = new FakeAdapter()
+
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    User.$adapter = adapter
+    const user = new User()
+    user.username = 'virk'
+    user.$options = { connection: 'foo' }
+
+    await user.save()
+    await user.delete()
+
+    assert.deepEqual(adapter.operations, [
+      {
+        type: 'insert',
+        instance: user,
+        attributes: { username: 'virk' },
+      },
+      {
+        type: 'delete',
+        instance: user,
+      },
+    ])
   })
 })
