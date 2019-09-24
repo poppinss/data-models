@@ -229,7 +229,7 @@ test.group('Model | relations', () => {
 
     assert.lengthOf(user.subjects, 1)
     assert.equal(user.subjects[0].title, 'Maths')
-    assert.deepEqual(user.subjects[0].$sideloaded.pivot, { id: 1, enrolled: true })
+    assert.deepEqual(user.subjects[0].$extras.pivot, { id: 1, enrolled: true })
   })
 
   test('serialize relation toJSON', (assert) => {
@@ -325,7 +325,7 @@ test.group('Model | relations', () => {
     assert.lengthOf(user.subjects, 1)
     assert.equal(user.subjects[0].title, 'Maths')
     assert.deepEqual(user.subjects[0].$options, { connection: 'foo' })
-    assert.deepEqual(user.subjects[0].$sideloaded.pivot, { id: 1, enrolled: true })
+    assert.deepEqual(user.subjects[0].$extras.pivot, { id: 1, enrolled: true })
   })
 
   test('pass model options to one to one related models', (assert) => {
@@ -354,5 +354,69 @@ test.group('Model | relations', () => {
     assert.deepEqual(user.profile.username, 'virk')
     assert.instanceOf(user.$preloaded.profile, Profile)
     assert.deepEqual((user.$preloaded.profile as Profile).$options, { connection: 'foo' })
+  })
+
+  test('pass sideloaded properties to one to one related models', (assert) => {
+    class Profile extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    class User extends BaseModel {
+      @column({ primary: true })
+      public id: number
+
+      @hasOne({ relatedModel: () => Profile })
+      public profile: Profile
+    }
+
+    const user = new User()
+    user.$consumeAdapterResult({
+      id: 1,
+      profile: {
+        username: 'virk',
+      },
+    }, { loggedInUser: { id: 1 } })
+
+    assert.deepEqual(user.profile.username, 'virk')
+    assert.deepEqual(user.$sideloaded, { loggedInUser: { id: 1 } })
+    assert.instanceOf(user.$preloaded.profile, Profile)
+    assert.deepEqual((user.$preloaded.profile as Profile).$sideloaded, user.$sideloaded)
+  })
+
+  test('pass sideloaded properties to one to many related models', (assert) => {
+    class Subject extends BaseModel {
+      @column()
+      public title: string
+    }
+
+    class User extends BaseModel {
+      @column({ primary: true })
+      public id: number
+
+      @manyToMany({ relatedModel: () => Subject })
+      public subjects: Subject[]
+    }
+
+    const user = new User()
+    user.$consumeAdapterResult({
+      id: 1,
+      subjects: [{
+        title: 'Maths',
+        pivot: {
+          id: 1,
+          enrolled: true,
+        },
+      }],
+    }, { loggedInUser: { id: 1 } })
+
+    assert.deepEqual(user.$sideloaded, { loggedInUser: { id: 1 } })
+    assert.lengthOf((user.$preloaded.subjects as ModelContract[]), 1)
+    assert.instanceOf(user.$preloaded.subjects[0], Subject)
+
+    assert.lengthOf(user.subjects, 1)
+    assert.equal(user.subjects[0].title, 'Maths')
+    assert.deepEqual(user.subjects[0].$sideloaded, user.$sideloaded)
+    assert.deepEqual(user.subjects[0].$extras.pivot, { id: 1, enrolled: true })
   })
 })

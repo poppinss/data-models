@@ -793,16 +793,16 @@ test.group('BaseModel | fill/merge', () => {
     assert.deepEqual(user.$attributes, { username: 'virk' })
   })
 
-  test('set sideload properties via fill', (assert) => {
+  test('set extra properties via fill', (assert) => {
     class User extends BaseModel {
       @column()
       public username: string
     }
 
     const user = new User()
-    user.fill({ username: 'virk', isAdmin: true }, ['isAdmin'])
+    user.fill({ username: 'virk', isAdmin: true })
     assert.deepEqual(user.$attributes, { username: 'virk' })
-    assert.deepEqual(user.$sideloaded, { isAdmin: true })
+    assert.deepEqual(user.$extras, { isAdmin: true })
   })
 
   test('overwrite existing values when using fill', (assert) => {
@@ -982,5 +982,49 @@ test.group('Base | apdater', () => {
         instance: user,
       },
     ])
+  })
+})
+
+test.group('Base Model | sideloaded', () => {
+  test('define sideloaded properties using $consumeAdapterResults method', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    const user = new User()
+    user.$consumeAdapterResult({ username: 'virk' }, { loggedInUser: { id: 1 } })
+
+    assert.deepEqual(user.$attributes, { username: 'virk' })
+    assert.deepEqual(user.$sideloaded, { loggedInUser: { id: 1 } })
+  })
+
+  test('define sideloaded properties using $createFromAdapterResult method', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    const user = User.$createFromAdapterResult({ username: 'virk' }, { loggedInUser: { id: 1 } })!
+    assert.deepEqual(user.$attributes, { username: 'virk' })
+    assert.deepEqual(user.$sideloaded, { loggedInUser: { id: 1 } })
+  })
+
+  test('define sideloaded properties using $createMultipleFromAdapterResult method', (assert) => {
+    class User extends BaseModel {
+      @column()
+      public username: string
+    }
+
+    const users = User.$createMultipleFromAdapterResult(
+      [{ username: 'virk' }, { username: 'nikk' }],
+      { loggedInUser: { id: 1 } },
+    )
+
+    assert.deepEqual(users[0].$attributes, { username: 'virk' })
+    assert.deepEqual(users[0].$sideloaded, { loggedInUser: { id: 1 } })
+
+    assert.deepEqual(users[1].$attributes, { username: 'nikk' })
+    assert.deepEqual(users[1].$sideloaded, { loggedInUser: { id: 1 } })
   })
 })

@@ -133,7 +133,7 @@ export abstract class BaseModel implements ModelContract {
   public static $createFromAdapterResult<T extends ModelContract> (
     this: new () => T,
     adapterResult: ModelObject,
-    sideloadAttributes?: string[],
+    sideloadAttributes?: ModelObject,
     options?: any,
   ): T | null {
     if (!isObject(adapterResult)) {
@@ -163,7 +163,7 @@ export abstract class BaseModel implements ModelContract {
   public static $createMultipleFromAdapterResult<T extends ModelContract> (
     this: new () => T,
     adapterResults: ModelObject[],
-    sideloadAttributes?: string[],
+    sideloadAttributes?: ModelObject,
     options?: any,
   ): T[] {
     if (!Array.isArray(adapterResults)) {
@@ -476,11 +476,26 @@ export abstract class BaseModel implements ModelContract {
    * Sideloaded are dynamic properties set on the model instance, which
    * are not serialized and neither casted for adapter calls.
    *
-   * This is helpful when adapter or some other part of the application
-   * want to add meta data to the models, without asking the user to
-   * pre-define properties for them.
+   * This is helpful when you want to add dynamic meta data to the model
+   * and it's children as well.
+   *
+   * The difference between [[$extras]] and [[$sideloaded]] is:
+   *
+   * - Extras can be different for each model instance
+   * - Extras are not shared down the hierarchy (example relationships)
+   * - Sideloaded are shared across multiple model instances created via `$createMultipleFromAdapterResult`.
+   * - Sideloaded are passed to the relationships as well.
    */
   public $sideloaded: ModelObject = {}
+
+  /**
+   * Extras are dynamic properties set on the model instance, which
+   * are not serialized and neither casted for adapter calls.
+   *
+   * This is helpful when adapter wants to load some extra data conditionally
+   * and that data must not be persisted back the adapter.
+   */
+  public $extras: ModelObject = {}
 
   /**
    * Persisted means the model has been persisted with the adapter. This will
@@ -583,8 +598,16 @@ export abstract class BaseModel implements ModelContract {
    * Persisting the model with adapter insert/update results. This
    * method is invoked after adapter insert/update action.
    */
-  public $consumeAdapterResult (adapterResult: ModelObject, sideloadAttributes?: string[]) {
+  public $consumeAdapterResult (adapterResult: ModelObject, sideloadAttributes?: ModelObject) {
     const Model = this.constructor as typeof BaseModel
+
+    /**
+     * Merging sideloaded attributes with the existing sideloaded values
+     * on the model instance
+     */
+    if (sideloadAttributes) {
+      this.$sideloaded = Object.assign({}, this.$sideloaded, sideloadAttributes)
+    }
 
     /**
      * Merge result of adapter with the attributes. This enables
@@ -604,6 +627,7 @@ export abstract class BaseModel implements ModelContract {
         const columnName = Model._mappings.cast.get(key)
         if (columnName) {
           this.$setAttribute(columnName, adapterResult[key])
+          return
         }
 
         /**
@@ -611,14 +635,10 @@ export abstract class BaseModel implements ModelContract {
          */
         if (Model.$relations.has(key)) {
           this.$setRelated(key, adapterResult[key])
+          return
         }
 
-        /**
-         * Set as sideloaded when defined
-         */
-        if (sideloadAttributes && sideloadAttributes.includes(key)) {
-          this.$sideloaded[key] = adapterResult[key]
-        }
+        this.$extras[key] = adapterResult[key]
       })
     }
   }
@@ -639,15 +659,6 @@ export abstract class BaseModel implements ModelContract {
     }
 
     const relatedModel = relation.relatedModel()
-    let sideloadAttributes: string[] = []
-
-    /**
-     * Sideloading pivot object when pivotModel is not defined for many to many
-     * relation
-     */
-    if (relation.type === 'manyToMany') {
-      sideloadAttributes = ['pivot']
-    }
 
     /**
      * Instance of model to be set as relationship
@@ -660,13 +671,13 @@ export abstract class BaseModel implements ModelContract {
     if (['hasMany', 'manyToMany', 'hasManyThrough'].includes(relation.type)) {
       instance = relatedModel.$createMultipleFromAdapterResult(
         adapterResult as ModelObject[],
-        sideloadAttributes,
+        this.$sideloaded,
         this.$options,
       )
     } else {
       instance = relatedModel.$createFromAdapterResult(
         adapterResult,
-        sideloadAttributes,
+        this.$sideloaded,
         this.$options,
       )
     }
@@ -689,16 +700,16 @@ export abstract class BaseModel implements ModelContract {
    * fill isn't allowed, since we disallow setting relationships
    * locally
    */
-  public fill (values: ModelObject, sideloadAttributes?: string[]) {
+  public fill (values: ModelObject) {
     this.$attributes = {}
-    this.merge(values, sideloadAttributes)
+    this.merge(values)
     this._fillInvoked = true
   }
 
   /**
    * Merge bulk attributes with existing attributes.
    */
-  public merge (values: ModelObject, sideloadAttributes?: string[]) {
+  public merge (values: ModelObject) {
     const Model = this.constructor as typeof BaseModel
 
     /**
@@ -710,14 +721,10 @@ export abstract class BaseModel implements ModelContract {
       Object.keys(values).forEach((key) => {
         if (Model.$hasColumn(key)) {
           this[key] = values[key]
+          return
         }
 
-        /**
-         * Set as sideloaded when defined
-         */
-        if (sideloadAttributes && sideloadAttributes.includes(key)) {
-          this.$sideloaded[key] = values[key]
-        }
+        this.$extras[key] = values[key]
       })
     }
   }

@@ -117,6 +117,7 @@ export interface ModelObject {
  */
 export interface ModelContract {
   $attributes: ModelObject
+  $extras: ModelObject
   $original: ModelObject
   $persisted: boolean
   $isNew: boolean
@@ -129,12 +130,12 @@ export interface ModelContract {
   $primaryKeyValue?: any
   $options?: any
 
-  $consumeAdapterResult (result: ModelObject, sideloadAttributes?: string[]): void
+  $consumeAdapterResult (result: ModelObject, sideloadAttributes?: ModelObject): void
   $setRelated (key: string, result: ModelObject): void
   $hydrateOriginals (): void
 
-  fill (value: ModelObject, sideloadAttributes?: string[]): void
-  merge (value: ModelObject, sideloadAttributes?: string[]): void
+  fill (value: ModelObject): void
+  merge (value: ModelObject): void
   save (): Promise<void>
   delete (): Promise<void>
   toJSON (): ModelObject
@@ -161,13 +162,13 @@ export interface ModelConstructorContract {
    */
   $createFromAdapterResult (
     result?: ModelObject,
-    sideloadAttributes?: string[],
+    sideloadAttributes?: ModelObject,
     options?: any,
   ): null | ModelContract
 
   $createMultipleFromAdapterResult (
     results: ModelObject[],
-    sideloadAttributes?: string[],
+    sideloadAttributes?: ModelObject,
     options?: any,
   ): ModelContract[]
 
