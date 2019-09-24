@@ -51,7 +51,7 @@ ___
 
 ###  find
 
-▸ **find**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `key`: string, `value`: any): *Promise‹any›*
+▸ **find**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `key`: string, `value`: any, `options?`: any): *Promise‹any›*
 
 *Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
@@ -62,6 +62,7 @@ Name | Type |
 `model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
 `key` | string |
 `value` | any |
+`options?` | any |
 
 **Returns:** *Promise‹any›*
 
@@ -69,7 +70,7 @@ ___
 
 ###  findAll
 
-▸ **findAll**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *Promise‹any›*
+▸ **findAll**(`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `options?`: any): *Promise‹any›*
 
 *Implementation of [AdapterContract](../interfaces/_poppinss_data_models.adaptercontract.md)*
 
@@ -78,6 +79,7 @@ ___
 Name | Type |
 ------ | ------ |
 `model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
+`options?` | any |
 
 **Returns:** *Promise‹any›*
 
@@ -164,13 +166,14 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *void*
+▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `options?`: any): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
+`options?` | any |
 
 **Returns:** *void*
 
@@ -182,13 +185,14 @@ Name | Type |
 
 ▪ **handler**: *function*
 
-▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md)): *void*
+▸ (`model`: [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md), `options?`: any): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `model` | [ModelConstructorContract](../interfaces/_poppinss_data_models.modelconstructorcontract.md) |
+`options?` | any |
 
 **Returns:** *void*
 

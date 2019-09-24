@@ -21,10 +21,12 @@ and `toJSON`.
 
 * [$attributes](_poppinss_data_models.modelcontract.md#$attributes)
 * [$dirty](_poppinss_data_models.modelcontract.md#$dirty)
+* [$extras](_poppinss_data_models.modelcontract.md#$extras)
 * [$isDeleted](_poppinss_data_models.modelcontract.md#$isdeleted)
 * [$isDirty](_poppinss_data_models.modelcontract.md#$isdirty)
 * [$isLocal](_poppinss_data_models.modelcontract.md#$islocal)
 * [$isNew](_poppinss_data_models.modelcontract.md#$isnew)
+* [$options](_poppinss_data_models.modelcontract.md#optional-$options)
 * [$original](_poppinss_data_models.modelcontract.md#$original)
 * [$persisted](_poppinss_data_models.modelcontract.md#$persisted)
 * [$preloaded](_poppinss_data_models.modelcontract.md#$preloaded)
@@ -56,6 +58,12 @@ ___
 
 ___
 
+###  $extras
+
+• **$extras**: *[ModelObject](_poppinss_data_models.modelobject.md)*
+
+___
+
 ###  $isDeleted
 
 • **$isDeleted**: *boolean*
@@ -77,6 +85,12 @@ ___
 ###  $isNew
 
 • **$isNew**: *boolean*
+
+___
+
+### `Optional` $options
+
+• **$options**? : *any*
 
 ___
 
@@ -116,14 +130,14 @@ ___
 
 ###  $consumeAdapterResult
 
-▸ **$consumeAdapterResult**(`result`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **$consumeAdapterResult**(`result`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: [ModelObject](_poppinss_data_models.modelobject.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `result` | [ModelObject](_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](_poppinss_data_models.modelobject.md) |
 
 **Returns:** *void*
 
@@ -162,14 +176,13 @@ ___
 
 ###  fill
 
-▸ **fill**(`value`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **fill**(`value`: [ModelObject](_poppinss_data_models.modelobject.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `value` | [ModelObject](_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
 
 **Returns:** *void*
 
@@ -177,14 +190,13 @@ ___
 
 ###  merge
 
-▸ **merge**(`value`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **merge**(`value`: [ModelObject](_poppinss_data_models.modelobject.md)): *void*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `value` | [ModelObject](_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
 
 **Returns:** *void*
 

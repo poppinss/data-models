@@ -146,7 +146,7 @@ ___
 
 ###  $createFromAdapterResult
 
-▸ **$createFromAdapterResult**(`result?`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *null | [ModelContract](_poppinss_data_models.modelcontract.md)*
+▸ **$createFromAdapterResult**(`result?`: [ModelObject](_poppinss_data_models.modelobject.md), `sideloadAttributes?`: [ModelObject](_poppinss_data_models.modelobject.md), `options?`: any): *null | [ModelContract](_poppinss_data_models.modelcontract.md)*
 
 Creating model from adapter results
 
@@ -155,7 +155,8 @@ Creating model from adapter results
 Name | Type |
 ------ | ------ |
 `result?` | [ModelObject](_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](_poppinss_data_models.modelobject.md) |
+`options?` | any |
 
 **Returns:** *null | [ModelContract](_poppinss_data_models.modelcontract.md)*
 
@@ -163,14 +164,15 @@ ___
 
 ###  $createMultipleFromAdapterResult
 
-▸ **$createMultipleFromAdapterResult**(`results`: [ModelObject](_poppinss_data_models.modelobject.md)[], `sideloadAttributes?`: string[]): *[ModelContract](_poppinss_data_models.modelcontract.md)[]*
+▸ **$createMultipleFromAdapterResult**(`results`: [ModelObject](_poppinss_data_models.modelobject.md)[], `sideloadAttributes?`: [ModelObject](_poppinss_data_models.modelobject.md), `options?`: any): *[ModelContract](_poppinss_data_models.modelcontract.md)[]*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `results` | [ModelObject](_poppinss_data_models.modelobject.md)[] |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](_poppinss_data_models.modelobject.md) |
+`options?` | any |
 
 **Returns:** *[ModelContract](_poppinss_data_models.modelcontract.md)[]*
 
@@ -282,7 +284,13 @@ ___
 
 ###  findAll
 
-▸ **findAll**(): *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
+▸ **findAll**(`options?`: any): *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
+
+**Parameters:**
+
+Name | Type |
+------ | ------ |
+`options?` | any |
 
 **Returns:** *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
 
@@ -290,7 +298,7 @@ ___
 
 ###  findBy
 
-▸ **findBy**(`key`: string, `value`: any): *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*
+▸ **findBy**(`key`: string, `value`: any, `options?`: any): *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*
 
 Creating model by invoking actions on adapter
 
@@ -300,5 +308,6 @@ Name | Type |
 ------ | ------ |
 `key` | string |
 `value` | any |
+`options?` | any |
 
 **Returns:** *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*

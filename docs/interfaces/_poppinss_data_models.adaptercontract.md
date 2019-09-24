@@ -40,7 +40,7 @@ ___
 
 ###  find
 
-▸ **find**(`model`: [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md), `key`: string, `value`: any): *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*
+▸ **find**(`model`: [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md), `key`: string, `value`: any, `options?`: any): *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*
 
 **Parameters:**
 
@@ -49,6 +49,7 @@ Name | Type |
 `model` | [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md) |
 `key` | string |
 `value` | any |
+`options?` | any |
 
 **Returns:** *Promise‹null | [ModelContract](_poppinss_data_models.modelcontract.md)›*
 
@@ -56,13 +57,14 @@ ___
 
 ###  findAll
 
-▸ **findAll**(`model`: [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md)): *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
+▸ **findAll**(`model`: [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md), `options?`: any): *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
 
 **Parameters:**
 
 Name | Type |
 ------ | ------ |
 `model` | [ModelConstructorContract](_poppinss_data_models.modelconstructorcontract.md) |
+`options?` | any |
 
 **Returns:** *Promise‹[ModelContract](_poppinss_data_models.modelcontract.md)[]›*
 

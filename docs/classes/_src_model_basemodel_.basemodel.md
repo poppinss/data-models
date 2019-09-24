@@ -21,8 +21,10 @@ Abstract class to define fully fledged data models
 ### Properties
 
 * [$attributes](_src_model_basemodel_.basemodel.md#$attributes)
+* [$extras](_src_model_basemodel_.basemodel.md#$extras)
 * [$isDeleted](_src_model_basemodel_.basemodel.md#$isdeleted)
 * [$isLocal](_src_model_basemodel_.basemodel.md#$islocal)
+* [$options](_src_model_basemodel_.basemodel.md#$options)
 * [$original](_src_model_basemodel_.basemodel.md#$original)
 * [$persisted](_src_model_basemodel_.basemodel.md#$persisted)
 * [$preloaded](_src_model_basemodel_.basemodel.md#$preloaded)
@@ -93,6 +95,20 @@ A copy of attributes that will be sent over to adapter
 
 ___
 
+###  $extras
+
+• **$extras**: *[ModelObject](../interfaces/_poppinss_data_models.modelobject.md)*
+
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$extras](../interfaces/_poppinss_data_models.modelcontract.md#$extras)*
+
+Extras are dynamic properties set on the model instance, which
+are not serialized and neither casted for adapter calls.
+
+This is helpful when adapter wants to load some extra data conditionally
+and that data must not be persisted back the adapter.
+
+___
+
 ###  $isDeleted
 
 • **$isDeleted**: *boolean* = false
@@ -111,6 +127,17 @@ ___
 
 `$isLocal` tells if the model instance was created locally vs
 one generated as a result of fetch call from the adapter.
+
+___
+
+###  $options
+
+• **$options**: *any*
+
+*Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md).[$options](../interfaces/_poppinss_data_models.modelcontract.md#optional-$options)*
+
+Custom options defined on the model instance that are
+passed to the adapter
 
 ___
 
@@ -160,9 +187,15 @@ ___
 Sideloaded are dynamic properties set on the model instance, which
 are not serialized and neither casted for adapter calls.
 
-This is helpful when adapter or some other part of the application
-want to add meta data to the models, without asking the user to
-pre-define properties for them.
+This is helpful when you want to add dynamic meta data to the model
+and it's children as well.
+
+The difference between [$extras](_src_model_basemodel_.basemodel.md#$extras) and [$sideloaded](_src_model_basemodel_.basemodel.md#$sideloaded) is:
+
+- Extras can be different for each model instance
+- Extras are not shared down the hierarchy (example relationships)
+- Sideloaded are shared across multiple model instances created via `$createMultipleFromAdapterResult`.
+- Sideloaded are passed to the relationships as well.
 
 ___
 
@@ -271,7 +304,7 @@ set inside attributes object
 
 ###  $consumeAdapterResult
 
-▸ **$consumeAdapterResult**(`adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **$consumeAdapterResult**(`adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)): *void*
 
 *Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
@@ -283,7 +316,7 @@ method is invoked after adapter insert/update action.
 Name | Type |
 ------ | ------ |
 `adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
 
 **Returns:** *void*
 
@@ -428,7 +461,7 @@ ___
 
 ###  fill
 
-▸ **fill**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **fill**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)): *void*
 
 *Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
@@ -441,7 +474,6 @@ locally
 Name | Type |
 ------ | ------ |
 `values` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
 
 **Returns:** *void*
 
@@ -449,7 +481,7 @@ ___
 
 ###  merge
 
-▸ **merge**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *void*
+▸ **merge**(`values`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)): *void*
 
 *Implementation of [ModelContract](../interfaces/_poppinss_data_models.modelcontract.md)*
 
@@ -460,7 +492,6 @@ Merge bulk attributes with existing attributes.
 Name | Type |
 ------ | ------ |
 `values` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
 
 **Returns:** *void*
 
@@ -555,7 +586,7 @@ ___
 
 ### `Static` $createFromAdapterResult
 
-▸ **$createFromAdapterResult**<**T**>(`this`: object, `adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: string[]): *T | null*
+▸ **$createFromAdapterResult**<**T**>(`this`: object, `adapterResult`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `sideloadAttributes?`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `options?`: any): *T | null*
 
 Create a model instance from the adapter result. The result value must
 be a valid object, otherwise `null` is returned.
@@ -570,7 +601,8 @@ Name | Type |
 ------ | ------ |
 `this` | object |
 `adapterResult` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
+`options?` | any |
 
 **Returns:** *T | null*
 
@@ -578,7 +610,7 @@ ___
 
 ### `Static` $createMultipleFromAdapterResult
 
-▸ **$createMultipleFromAdapterResult**<**T**>(`this`: object, `adapterResults`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[], `sideloadAttributes?`: string[]): *T[]*
+▸ **$createMultipleFromAdapterResult**<**T**>(`this`: object, `adapterResults`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[], `sideloadAttributes?`: [ModelObject](../interfaces/_poppinss_data_models.modelobject.md), `options?`: any): *T[]*
 
 Creates an array of models from the adapter results. The `adapterResults`
 must be an array with valid Javascript objects.
@@ -596,7 +628,8 @@ Name | Type |
 ------ | ------ |
 `this` | object |
 `adapterResults` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md)[] |
-`sideloadAttributes?` | string[] |
+`sideloadAttributes?` | [ModelObject](../interfaces/_poppinss_data_models.modelobject.md) |
+`options?` | any |
 
 **Returns:** *T[]*
 
@@ -726,7 +759,7 @@ ___
 
 ### `Static` findAll
 
-▸ **findAll**<**T**>(`this`: object): *Promise‹T[]›*
+▸ **findAll**<**T**>(`this`: object, `options?`: any): *Promise‹T[]›*
 
 Create a array of model instances from the adapter result
 
@@ -739,6 +772,7 @@ Create a array of model instances from the adapter result
 Name | Type |
 ------ | ------ |
 `this` | object |
+`options?` | any |
 
 **Returns:** *Promise‹T[]›*
 
@@ -746,7 +780,7 @@ ___
 
 ### `Static` findBy
 
-▸ **findBy**<**T**>(`this`: object, `key`: string, `value`: any): *Promise‹null | T›*
+▸ **findBy**<**T**>(`this`: object, `key`: string, `value`: any, `options?`: any): *Promise‹null | T›*
 
 Find model instance using a key/value pair
 
@@ -761,5 +795,6 @@ Name | Type |
 `this` | object |
 `key` | string |
 `value` | any |
+`options?` | any |
 
 **Returns:** *Promise‹null | T›*
