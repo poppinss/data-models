@@ -39,7 +39,7 @@ const DEFAULTS = {
  * A proxy trap to add support for custom getters and setters
  */
 export const proxyHandler = {
-  get (target: any, key: any) {
+  get (target: any, key: any, receiver: any) {
     const Model = target.constructor as ModelConstructorContract
     const column = Model.$getColumn(key)
 
@@ -59,10 +59,10 @@ export const proxyHandler = {
       return target.$getRelated(key, DEFAULTS[relation.type])
     }
 
-    return Reflect.get(target, key)
+    return Reflect.get(target, key, receiver)
   },
 
-  set (target: any, key: any, value: any) {
+  set (target: any, key: any, value: any, receiver) {
     const Model = target.constructor as ModelConstructorContract
     const column = Model.$getColumn(key)
 
@@ -83,6 +83,6 @@ export const proxyHandler = {
       throw new Exception('Cannot set relationships locally', 500, 'E_CANNOT_DEFINE_RELATIONSHIP')
     }
 
-    return Reflect.set(target, key, value)
+    return Reflect.set(target, key, value, receiver)
   },
 }

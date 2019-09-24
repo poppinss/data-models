@@ -717,7 +717,7 @@ test.group('Base Model | toJSON', () => {
 
       @computed()
       public get fullName () {
-        return this.$attributes.username.toUpperCase()
+        return this.username.toUpperCase()
       }
     }
 
