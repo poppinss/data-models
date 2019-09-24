@@ -18,7 +18,7 @@ A proxy trap to add support for custom getters and setters
 
 ###  get
 
-▸ **get**(`target`: any, `key`: any): *any*
+▸ **get**(`target`: any, `key`: any, `receiver`: any): *any*
 
 **Parameters:**
 
@@ -26,12 +26,13 @@ Name | Type |
 ------ | ------ |
 `target` | any |
 `key` | any |
+`receiver` | any |
 
 **Returns:** *any*
 
 ###  set
 
-▸ **set**(`target`: any, `key`: any, `value`: any): *boolean*
+▸ **set**(`target`: any, `key`: any, `value`: any, `receiver`: any): *boolean*
 
 **Parameters:**
 
@@ -40,5 +41,6 @@ Name | Type |
 `target` | any |
 `key` | any |
 `value` | any |
+`receiver` | any |
 
 **Returns:** *boolean*
